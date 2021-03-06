@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Editor from "../components/Editor";
 
 const IndexPage = () => {
   return (
@@ -7,8 +8,8 @@ const IndexPage = () => {
         <title>Flashcard Web App</title>
         <meta name="Description" content="A Flashcard Web App" />
       </Head>
-      <div className="py-20">
-        <section className="container mx-auto px-6"></section>
+      <div className="py-20 mx-auto w-full">
+        <Editor />
       </div>
     </div>
   );

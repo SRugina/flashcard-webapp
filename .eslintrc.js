@@ -13,7 +13,6 @@ module.exports = {
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "prettier",
-    "prettier/@typescript-eslint",
   ],
   env: {
     es6: true,
