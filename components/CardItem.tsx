@@ -2,11 +2,12 @@ import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import { Resizable, ResizeCallbackData } from "react-resizable";
 import { useGlobal } from "../providers/GlobalProvider";
+import CardImage from "./CardImage";
 import CardText from "./CardText";
 
 export type CardItemData = {
   id: number;
-  type: "text";
+  type: "text" | "image";
   left: number;
   top: number;
   width: number;
@@ -83,9 +84,9 @@ const CardItem = ({
         >
           <div
             onFocus={() => setActiveItem(id)}
-            className={`absolute inline-block rounded hover-handles overflow-hidden overflow-y-auto ${
+            className={`absolute inline-block rounded hover-handles overflow-hidden ${
               type === "text"
-                ? "focus-within:outline-none focus-within:ring-2 focus-within:ring-nord9"
+                ? "overflow-y-auto focus-within:outline-none focus-within:ring-2 focus-within:ring-nord9"
                 : ""
             }`}
             style={{ width: size.width, height: size.height }}
@@ -95,6 +96,9 @@ const CardItem = ({
             {type === "text" ? (
               // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               <CardText content={content} setContent={setContent} />
+            ) : type === "image" ? (
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+              <CardImage content={content} setContent={setContent} />
             ) : (
               <></>
             )}

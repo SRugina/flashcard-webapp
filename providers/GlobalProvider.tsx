@@ -20,6 +20,7 @@ export type GlobalData = {
   updateItem: (itemId: number, layerId: number, data: updateItemData) => void;
   deleteCurrentItem: () => void;
   addTextItem: () => void;
+  addImageItem: () => void;
 };
 
 // Create a context that will hold the values that we are going to expose to our components.
@@ -67,16 +68,12 @@ export const GlobalProvider = ({ children }: Props) => {
       contents: [
         {
           id: 0,
-          type: "text",
+          type: "image",
           left: 0,
           top: 0,
           width: 100,
           height: 100,
-          contents: [
-            {
-              children: [{ text: "**bold** and _stuff_" }],
-            },
-          ],
+          contents: "",
         },
       ],
     },
@@ -172,6 +169,29 @@ export const GlobalProvider = ({ children }: Props) => {
     );
   };
 
+  const addImageItem = () => {
+    setLayers(
+      [...layers].map((layer) => {
+        if (layer.id === activeLayer) {
+          const newContents = [
+            ...layer.contents,
+            {
+              id: layer.contents[layer.contents.length - 1]?.id + 1 || 0,
+              type: "image",
+              left: 0,
+              top: 0,
+              width: 200,
+              height: 200,
+              contents: "",
+            } as CardItemData,
+          ];
+          return { ...layer, contents: newContents };
+        }
+        return layer;
+      })
+    );
+  };
+
   const values = useMemo(
     () => ({
       layers,
@@ -184,6 +204,7 @@ export const GlobalProvider = ({ children }: Props) => {
       updateItem,
       deleteCurrentItem,
       addTextItem,
+      addImageItem,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [activeLayer, layers, activeItem]

@@ -10,6 +10,7 @@ const Editor = () => {
     deleteCurrentLayer,
     deleteCurrentItem,
     addTextItem,
+    addImageItem,
   } = useGlobal();
   return (
     <div className="flex mx-auto justify-center">
@@ -73,6 +74,13 @@ const Editor = () => {
           onClick={() => addTextItem()}
         >
           Add Text
+        </button>
+        <button
+          type="button"
+          className="mt-1 font-semibold py-1 px-2 text-nord6 rounded bg-nord9 hover:bg-nord10 focus:bg-nord10"
+          onClick={() => addImageItem()}
+        >
+          Add Image
         </button>
       </div>
     </div>
