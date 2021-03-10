@@ -8,6 +8,8 @@ const Editor = () => {
     layers,
     addNewLayer,
     deleteCurrentLayer,
+    deleteCurrentItem,
+    addTextItem,
   } = useGlobal();
   return (
     <div className="flex mx-auto justify-center">
@@ -50,13 +52,27 @@ const Editor = () => {
           Preview Output
         </button>
       </div>
-      <div className="ml-4">
+      <div className="ml-4 flex flex-col">
         <button
           type="button"
           className="mt-1 font-semibold py-1 px-2 text-nord11 rounded border-2 border-nord11 hover:bg-nord11 hover:text-nord6 focus:bg-nord11 focus:text-nord6"
           onClick={() => deleteCurrentLayer()}
         >
           Delete Layer
+        </button>
+        <button
+          type="button"
+          className="mt-1 font-semibold py-1 px-2 text-nord11 rounded border-2 border-nord11 hover:bg-nord11 hover:text-nord6 focus:bg-nord11 focus:text-nord6"
+          onClick={() => deleteCurrentItem()}
+        >
+          Delete Item
+        </button>
+        <button
+          type="button"
+          className="mt-1 font-semibold py-1 px-2 text-nord6 rounded bg-nord9 hover:bg-nord10 focus:bg-nord10"
+          onClick={() => addTextItem()}
+        >
+          Add Text
         </button>
       </div>
     </div>

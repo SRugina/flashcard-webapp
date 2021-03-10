@@ -22,6 +22,7 @@
   "homepage": "https://github.com/SRugina/flashcard-webapp#readme",
   "devDependencies": {
     "@types/node": "^14.14.31",
+    "@types/prismjs": "^1.16.3",
     "@types/react": "^17.0.2",
     "@types/react-resizable": "^1.7.2",
     "@typescript-eslint/eslint-plugin": "^4.16.1",
@@ -42,10 +43,14 @@
   "dependencies": {
     "isomorphic-unfetch": "^3.1.0",
     "next": "10.0.7",
+    "prismjs": "^1.23.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-draggable": "^4.4.3",
     "react-resizable": "^1.11.0",
+    "slate": "^0.59.0",
+    "slate-history": "^0.59.0",
+    "slate-react": "^0.59.0",
     "swr": "^0.4.2"
   },
   "husky": {

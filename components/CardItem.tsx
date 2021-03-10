@@ -8,7 +8,7 @@ export type CardItemData = {
   id: number;
   type: "text";
   left: number;
-  right: number;
+  top: number;
   width: number;
   height: number;
   contents: any;
@@ -24,19 +24,19 @@ const CardItem = ({
   parent,
   parentId,
   left,
-  right,
+  top,
   width,
   height,
   type,
   contents,
 }: CardItemProps) => {
-  const [deltaPosition, setDeltaPosition] = useState({ x: left, y: right });
+  const [deltaPosition, setDeltaPosition] = useState({ x: left, y: top });
   const [size, setSize] = useState({ width, height });
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const [content, setContent] = useState(contents);
   const nodeRef = useRef(null);
 
-  const { updateItem } = useGlobal();
+  const { updateItem, setActiveItem } = useGlobal();
 
   const handleDrag = (_e: DraggableEvent, data: DraggableData) => {
     const { x, y } = deltaPosition;
@@ -70,6 +70,7 @@ const CardItem = ({
         onDrag={handleDrag}
         cancel={".react-resizable-handle"}
         nodeRef={nodeRef}
+        defaultPosition={deltaPosition}
       >
         <Resizable
           width={size.width}
@@ -81,7 +82,12 @@ const CardItem = ({
           ]}
         >
           <div
-            className="absolute inline-block rounded hover-handles overflow-hidden"
+            onFocus={() => setActiveItem(id)}
+            className={`absolute inline-block rounded hover-handles overflow-hidden overflow-y-auto ${
+              type === "text"
+                ? "focus-within:outline-none focus-within:ring-2 focus-within:ring-nord9"
+                : ""
+            }`}
             style={{ width: size.width, height: size.height }}
             tabIndex={-1}
             ref={nodeRef}
@@ -92,10 +98,6 @@ const CardItem = ({
             ) : (
               <></>
             )}
-            <div>
-              position x: {deltaPosition.x.toFixed(0)}, y:{" "}
-              {deltaPosition.y.toFixed(0)}
-            </div>
           </div>
         </Resizable>
       </Draggable>
