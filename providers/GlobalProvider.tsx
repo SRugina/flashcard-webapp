@@ -5,6 +5,9 @@ import {
   useMemo,
   ReactNode,
   Dispatch,
+  SetStateAction,
+  useRef,
+  MutableRefObject,
 } from "react";
 import { CardItemData } from "../components/CardItem";
 import { LayerData } from "../components/Layer";
@@ -13,14 +16,26 @@ export type GlobalData = {
   layers: Array<LayerData>;
   addNewLayer: () => void;
   activeLayer: number;
-  setActiveLayer: Dispatch<number>;
+  setActiveLayer: Dispatch<SetStateAction<number>>;
   activeItem: number;
-  setActiveItem: Dispatch<number>;
+  setActiveItem: Dispatch<SetStateAction<number>>;
+  isDrawingMode: boolean;
+  setIsDrawingMode: Dispatch<SetStateAction<boolean>>;
   deleteCurrentLayer: () => void;
   updateItem: (itemId: number, layerId: number, data: updateItemData) => void;
   deleteCurrentItem: () => void;
   addTextItem: () => void;
   addImageItem: () => void;
+  penColour: string;
+  penColourRef: MutableRefObject<string>;
+  setPenColour: (val: string) => void;
+  penRadius: number;
+  penRadiusRef: MutableRefObject<number>;
+  setPenRadius: (val: number) => void;
+  penErase: boolean;
+  penEraseRef: MutableRefObject<boolean>;
+  setPenErase: (val: boolean) => void;
+  updateDrawLayer: (layerId: number, data: string) => void;
 };
 
 // Create a context that will hold the values that we are going to expose to our components.
@@ -62,29 +77,26 @@ export const GlobalProvider = ({ children }: Props) => {
           ],
         },
       ],
+      drawContents: "",
     },
     {
       id: 1,
-      contents: [
-        {
-          id: 0,
-          type: "image",
-          left: 0,
-          top: 0,
-          width: 100,
-          height: 100,
-          contents: "",
-        },
-      ],
+      contents: [],
+      drawContents: "",
     },
   ] as Array<LayerData>);
   const [activeLayer, setActiveLayer] = useState(0);
   const [activeItem, setActiveItem] = useState(-1);
+  const [isDrawingMode, setIsDrawingMode] = useState(false);
 
   const addNewLayer = () => {
     setLayers([
       ...layers,
-      { id: layers[layers.length - 1]?.id + 1 || 0, contents: [] },
+      {
+        id: layers[layers.length - 1]?.id + 1 || 0,
+        contents: [],
+        drawContents: "",
+      },
     ]);
   };
 
@@ -192,6 +204,41 @@ export const GlobalProvider = ({ children }: Props) => {
     );
   };
 
+  const [penColour, _setPenColour] = useState("#000000");
+  const penColourRef = useRef(penColour);
+  const setPenColour = (val: string) => {
+    penColourRef.current = val;
+    _setPenColour(val);
+  };
+
+  const [penRadius, _setPenRadius] = useState(2);
+  const penRadiusRef = useRef(penRadius);
+  const setPenRadius = (val: number) => {
+    penRadiusRef.current = val;
+    _setPenRadius(val);
+  };
+
+  const [penErase, _setPenErase] = useState(false);
+  const penEraseRef = useRef(penErase);
+  const setPenErase = (val: boolean) => {
+    penEraseRef.current = val;
+    _setPenErase(val);
+  };
+
+  const updateDrawLayer = (layerId: number, data: string) => {
+    setLayers(
+      [...layers].map((layer) => {
+        if (layer.id === layerId) {
+          return {
+            ...layer,
+            drawContents: data,
+          };
+        }
+        return layer;
+      })
+    );
+  };
+
   const values = useMemo(
     () => ({
       layers,
@@ -200,14 +247,34 @@ export const GlobalProvider = ({ children }: Props) => {
       setActiveLayer,
       activeItem,
       setActiveItem,
+      isDrawingMode,
+      setIsDrawingMode,
       deleteCurrentLayer,
       updateItem,
       deleteCurrentItem,
       addTextItem,
       addImageItem,
+      penColour,
+      penColourRef,
+      setPenColour,
+      penRadius,
+      penRadiusRef,
+      setPenRadius,
+      penErase,
+      penEraseRef,
+      setPenErase,
+      updateDrawLayer,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [activeLayer, layers, activeItem]
+    [
+      activeLayer,
+      layers,
+      activeItem,
+      isDrawingMode,
+      penColour,
+      penRadius,
+      penErase,
+    ]
   );
 
   // Finally, return the interface that we want to expose to our other components
