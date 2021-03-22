@@ -20,7 +20,8 @@ const LoginPage = () => {
       await router.push("/");
     } catch (rawErrors) {
       if (
-        typeof ((rawErrors as FetchError).info as ApiError).error === "string"
+        (rawErrors as FetchError).info &&
+        ((rawErrors as FetchError).info as ApiError).error
       ) {
         setGenericError(<>{rawErrors}</>);
       } else {
