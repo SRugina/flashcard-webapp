@@ -3,3 +3,5 @@ node_modules
 out
 yarn.lock
 public
+dist
+worker

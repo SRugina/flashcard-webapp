@@ -1,3 +1,4 @@
+import { decompress } from "lz-string";
 import {
   createContext,
   useContext,
@@ -9,10 +10,49 @@ import {
   useRef,
   MutableRefObject,
 } from "react";
-import { CardItemData } from "../components/CardItem";
-import { LayerData } from "../components/Layer";
+import { toast } from "react-toastify";
+import {
+  CardItemData,
+  CollectionPreview,
+  FlashcardObject,
+  FlashcardPreview,
+  getCollectionResponse,
+  getSubCollectionResponse,
+  LayerData,
+  SubCollectionPreview,
+} from "../interfaces";
+import { FetchError, bodyApiFetch as fetch } from "../utils/fetch";
 
 export type GlobalData = {
+  /**
+   * the user's root collections, from the Collections Namespace
+   */
+  collections: Array<CollectionPreview>;
+  currentCollection: getCollectionResponse | null;
+  loadCollections: () => Promise<void>;
+  getCurrentCollection: (id: string) => Promise<getCollectionResponse | null>;
+
+  /**
+   * the current subCollections that were fetched.
+   */
+  subCollections: Array<SubCollectionPreview>;
+  currentSubCollection: getSubCollectionResponse | null;
+  loadSubCollections: () => Promise<void>;
+  getCurrentSubCollection: (
+    id: string
+  ) => Promise<getSubCollectionResponse | null>;
+
+  /**
+   * the current flashcards that were fetched.
+   */
+  flashcards: Array<FlashcardPreview>;
+  currentFlashcard: FlashcardObject | null;
+  loadFlashcards: () => Promise<void>;
+  getCurrentFlashcard: (id: string) => Promise<FlashcardObject | null>;
+
+  /**
+   * the currently open flashcard's layers.
+   */
   layers: Array<LayerData>;
   addNewLayer: () => void;
   activeLayer: number;
@@ -36,6 +76,7 @@ export type GlobalData = {
   penEraseRef: MutableRefObject<boolean>;
   setPenErase: (val: boolean) => void;
   updateDrawLayer: (layerId: number, data: string) => void;
+  createToast: (message: string) => void;
 };
 
 // Create a context that will hold the values that we are going to expose to our components.
@@ -55,6 +96,131 @@ type updateItemData = {
 
 // Create a "controller" component that will calculate all the data that we need
 export const GlobalProvider = ({ children }: Props) => {
+  const [collections, setCollections] = useState(
+    [] as Array<CollectionPreview>
+  );
+  const [currentCollection, setCurrentCollection] = useState(
+    null as getCollectionResponse | null
+  );
+
+  const loadCollections = async () => {
+    try {
+      const data = await fetch<Array<CollectionPreview>>("/collections", "GET");
+      setCollections(data || []);
+      return;
+    } catch (err) {
+      const error = err as FetchError;
+      // No specific errors expected, if occurs then we don't know the
+      // format, so throw info as-is
+      throw error.info;
+    }
+  };
+  const getCurrentCollection = async (id: string) => {
+    try {
+      const data = await fetch<getCollectionResponse>(
+        `/collections/${id}`,
+        "GET"
+      );
+      setCurrentCollection(data || null);
+      return data || null;
+    } catch (err) {
+      const error = err as FetchError;
+      // No specific errors expected, if occurs then we don't know the
+      // format, so throw info as-is
+      throw error.info;
+    }
+  };
+
+  const [subCollections, setSubCollections] = useState(
+    [] as Array<SubCollectionPreview>
+  );
+  const [currentSubCollection, setCurrentSubCollection] = useState(
+    null as getSubCollectionResponse | null
+  );
+
+  const loadSubCollections = async () => {
+    try {
+      const data = await fetch<Array<SubCollectionPreview>>(
+        `/collections/${currentCollection?.id || ""}/subcollections`,
+        "GET"
+      );
+      setSubCollections(data || []);
+      return;
+    } catch (err) {
+      const error = err as FetchError;
+      // No specific errors expected, if occurs then we don't know the
+      // format, so throw info as-is
+      throw error.info;
+    }
+  };
+  const getCurrentSubCollection = async (id: string) => {
+    try {
+      const data = await fetch<getSubCollectionResponse>(
+        `/collections/${currentCollection?.id || ""}/subcollections/${id}`,
+        "GET"
+      );
+      setCurrentSubCollection(data || null);
+      return data || null;
+    } catch (err) {
+      const error = err as FetchError;
+      // No specific errors expected, if occurs then we don't know the
+      // format, so throw info as-is
+      throw error.info;
+    }
+  };
+
+  const [flashcards, setFlashcards] = useState([] as Array<FlashcardPreview>);
+  const [currentFlashcard, setCurrentFlashcard] = useState(
+    null as FlashcardObject | null
+  );
+
+  const loadFlashcards = async () => {
+    try {
+      const key = `/collections/${currentCollection?.id || ""}${
+        currentSubCollection
+          ? `/subcollections/${currentSubCollection?.id}/flashcards`
+          : `/flashcards`
+      }`;
+      const data = await fetch<Array<FlashcardPreview>>(key, "GET");
+      setFlashcards(data || []);
+      return;
+    } catch (err) {
+      const error = err as FetchError;
+      // No specific errors expected, if occurs then we don't know the
+      // format, so throw info as-is
+      throw error.info;
+    }
+  };
+  const getCurrentFlashcard = async (id: string) => {
+    try {
+      const key = `/collections/${currentCollection?.id || ""}${
+        currentSubCollection
+          ? `/subcollections/${currentSubCollection?.id}/flashcards/${id}`
+          : `/flashcards/${id}`
+      }`;
+
+      const metadata = (await fetch<FlashcardPreview>(
+        `${key}/metadata`,
+        "GET"
+      )) || { id: "", title: "" };
+      const rawLayers = await fetch<string>(`${key}/layers`, "GET");
+
+      const layers = JSON.parse(
+        decompress(rawLayers || "") || "[]"
+      ) as Array<LayerData>;
+
+      const data: FlashcardObject | null = { ...metadata, layers } || null;
+
+      setCurrentFlashcard(data);
+      return data;
+    } catch (err) {
+      const error = err as FetchError;
+      // No specific errors expected, if occurs then we don't know the
+      // format, so throw info as-is
+      throw error.info;
+    }
+  };
+
   const [layers, setLayers] = useState([
     {
       id: 0,
@@ -239,8 +405,24 @@ export const GlobalProvider = ({ children }: Props) => {
     );
   };
 
+  const createToast = (message: string) => {
+    toast.error(message);
+  };
+
   const values = useMemo(
     () => ({
+      collections,
+      currentCollection,
+      loadCollections,
+      getCurrentCollection,
+      subCollections,
+      currentSubCollection,
+      loadSubCollections,
+      getCurrentSubCollection,
+      flashcards,
+      currentFlashcard,
+      getCurrentFlashcard,
+      loadFlashcards,
       layers,
       addNewLayer,
       activeLayer,
@@ -264,9 +446,16 @@ export const GlobalProvider = ({ children }: Props) => {
       penEraseRef,
       setPenErase,
       updateDrawLayer,
+      createToast,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
+      collections,
+      currentCollection,
+      subCollections,
+      currentSubCollection,
+      flashcards,
+      currentFlashcard,
       activeLayer,
       layers,
       activeItem,

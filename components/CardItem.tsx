@@ -1,19 +1,10 @@
 import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import { Resizable, ResizeCallbackData } from "react-resizable";
+import { CardItemData } from "../interfaces";
 import { useGlobal } from "../providers/GlobalProvider";
 import CardImage from "./CardImage";
 import CardText from "./CardText";
-
-export type CardItemData = {
-  id: number;
-  type: "text" | "image";
-  left: number;
-  top: number;
-  width: number;
-  height: number;
-  contents: any;
-};
 
 export interface CardItemProps extends CardItemData {
   parent: HTMLElement | null;

@@ -1,5 +1,6 @@
 import Flashcard from "../components/Flashcard";
 import { useGlobal } from "../providers/GlobalProvider";
+import Button from "./Button";
 
 const Editor = () => {
   const {
@@ -53,52 +54,71 @@ const Editor = () => {
             );
           })}
         </div>
-        <button
+        <Button
           type="button"
-          className="mt-1 font-semibold py-1 px-2 text-nord6 rounded bg-nord9 hover:bg-nord10 focus:bg-nord10"
+          color="primary"
+          size="small"
+          className="mt-1"
+          buttonType="button"
           onClick={() => setActiveLayer(-1)}
         >
           Preview Output
-        </button>
+        </Button>
       </div>
       <div className="ml-4 flex flex-col" style={{ maxWidth: "15ch" }}>
-        <button
+        <Button
           type="button"
-          className="mt-1 font-semibold py-1 px-2 text-nord11 rounded border-2 border-nord11 hover:bg-nord11 hover:text-nord6 focus:bg-nord11 focus:text-nord6"
+          color="danger"
+          size="small"
+          className="mt-1"
+          buttonType="button"
           onClick={() => deleteCurrentLayer()}
         >
           Delete Layer
-        </button>
-        <button
+        </Button>
+
+        <Button
           type="button"
-          className="mt-1 font-semibold py-1 px-2 text-nord11 rounded border-2 border-nord11 hover:bg-nord11 hover:text-nord6 focus:bg-nord11 focus:text-nord6"
+          color="danger"
+          size="small"
+          className="mt-1"
+          buttonType="button"
           onClick={() => deleteCurrentItem()}
         >
           Delete Item
-        </button>
-        <button
+        </Button>
+        <Button
           type="button"
-          className="mt-1 font-semibold py-1 px-2 text-nord6 rounded bg-nord9 hover:bg-nord10 focus:bg-nord10"
+          color="primary"
+          size="small"
+          className="mt-1"
+          buttonType="button"
           onClick={() => addTextItem()}
         >
-          Add Text
-        </button>
-        <button
+          Add Item
+        </Button>
+        <Button
           type="button"
-          className="mt-1 font-semibold py-1 px-2 text-nord6 rounded bg-nord9 hover:bg-nord10 focus:bg-nord10"
+          color="primary"
+          size="small"
+          className="mt-1"
+          buttonType="button"
           onClick={() => addImageItem()}
         >
           Add Image
-        </button>
-        <button
+        </Button>
+
+        <Button
           type="button"
-          className="mt-1 font-semibold py-1 px-2 text-nord6 rounded bg-nord9 hover:bg-nord10 focus:bg-nord10"
-          onClick={() => {
-            setIsDrawingMode(!isDrawingMode);
-          }}
+          color="primary"
+          size="small"
+          className="mt-1"
+          buttonType="button"
+          onClick={() => setIsDrawingMode(!isDrawingMode)}
         >
           {!isDrawingMode ? "Enter" : "Leave"} Drawing Mode
-        </button>
+        </Button>
+
         {isDrawingMode ? (
           <div className="mt-1">
             <label htmlFor="penColour">Pen Colour:</label>

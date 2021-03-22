@@ -1,10 +1,7 @@
-import Layer, { LayerData } from "./Layer";
+import { FlashcardData } from "../interfaces";
+import Layer from "./Layer";
 
-type Props = {
-  layers: Array<LayerData>;
-};
-
-const Flashcard = ({ layers }: Props) => {
+const Flashcard = ({ layers }: FlashcardData) => {
   return (
     <div
       className="relative bg-white rounded-lg"

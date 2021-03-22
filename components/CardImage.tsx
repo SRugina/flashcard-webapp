@@ -1,4 +1,5 @@
 import { Dispatch } from "react";
+import { useGlobal } from "../providers/GlobalProvider";
 import blobToBase64 from "../utils/blobToBase64";
 
 const CardImage = ({
@@ -8,6 +9,7 @@ const CardImage = ({
   content: string;
   setContent: Dispatch<string>;
 }) => {
+  const { createToast } = useGlobal();
   return (
     <div
       onPaste={async (e) => {
@@ -24,8 +26,9 @@ const CardImage = ({
         const item = items[0];
         // Get the blob of image
         const blob = item.getAsFile();
-        if (blob!.size / 1000000 > 2.5) {
+        if (blob!.size > 2.5 * 1000000) {
           // do not allow images larger than 2.5MB
+          createToast("Image can only be at most 2.5MB");
           return;
         }
         setContent(await blobToBase64(blob!));

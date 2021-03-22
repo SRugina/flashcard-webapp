@@ -8,7 +8,7 @@ const IndexPage = () => {
         <title>Flashcard Web App</title>
         <meta name="Description" content="A Flashcard Web App" />
       </Head>
-      <div className="py-20 mx-auto w-full">
+      <div className="mx-auto w-full">
         <Editor />
       </div>
     </div>

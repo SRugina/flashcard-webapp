@@ -57,6 +57,14 @@ html {
   :focus {
     @apply outline-none ring-2 ring-nord9;
   }
+
+  .accountFocus:focus {
+    @apply outline-none ring-0;
+  }
+
+  .accountFocus:focus #account-menu {
+    @apply outline-none ring-2 ring-nord9;
+  }
 }
 
 /* Start purging... */

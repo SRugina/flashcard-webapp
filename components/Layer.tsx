@@ -1,13 +1,8 @@
 import { useState } from "react";
+import { LayerData } from "../interfaces";
 import { useGlobal } from "../providers/GlobalProvider";
 import { useCanvas } from "../utils/canvas";
-import CardItem, { CardItemData } from "./CardItem";
-
-export type LayerData = {
-  id: number;
-  contents: Array<CardItemData>;
-  drawContents: string;
-};
+import CardItem from "./CardItem";
 
 export interface LayerProps extends LayerData {
   zIndex: number;
