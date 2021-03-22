@@ -21,7 +21,7 @@ const AccountDeletePage = () => {
       await del();
       await router.push("/");
     } catch (rawErrors) {
-      setGenericError(<>{JSON.stringify(rawErrors)}</>);
+      setGenericError(<>Oops, something went wrong.</>);
     }
   };
   return (

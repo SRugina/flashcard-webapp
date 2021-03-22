@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useSelf } from "../utils/auth";
 import Button from "../components/Button";
 import Input from "../components/Input";
+import { FetchError, ApiError } from "../utils/fetch";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -18,13 +19,13 @@ const LoginPage = () => {
       await login(username, password);
       await router.push("/");
     } catch (rawErrors) {
-      // eslint-disable-next-line
-      console.log("RawErrors", rawErrors);
-      if (!(typeof rawErrors === "string")) {
+      if (
+        typeof ((rawErrors as FetchError).info as ApiError).error === "string"
+      ) {
+        setGenericError(<>{rawErrors}</>);
+      } else {
         // might occur if an unknown type of response occurs e.g. server down
         setGenericError(<>Oops, something went wrong.</>);
-      } else {
-        setGenericError(<>{rawErrors}</>);
       }
     }
   };

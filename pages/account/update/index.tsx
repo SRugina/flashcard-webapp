@@ -4,6 +4,7 @@ import { useSelf } from "../../../utils/auth";
 import Button from "../../../components/Button";
 import Input from "../../../components/Input";
 import { UpdateUserData } from "../../../interfaces";
+import { FetchError, ApiError } from "../../../utils/fetch";
 
 const AccountUpdatePage = () => {
   const router = useRouter();
@@ -28,11 +29,13 @@ const AccountUpdatePage = () => {
       await updateSelf(updateUser);
       await router.push("/");
     } catch (rawErrors) {
-      if (!(typeof rawErrors === "string")) {
+      if (
+        typeof ((rawErrors as FetchError).info as ApiError).error === "string"
+      ) {
+        setGenericError(<>{rawErrors}</>);
+      } else {
         // might occur if an unknown type of response occurs e.g. server down
         setGenericError(<>Oops, something went wrong.</>);
-      } else {
-        setGenericError(<>{rawErrors}</>);
       }
     }
   };
