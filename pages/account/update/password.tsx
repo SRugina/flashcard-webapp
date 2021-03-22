@@ -31,10 +31,10 @@ const AccountUpdatePasswordPage = () => {
       await updatePassword(updateUserPassword);
       await router.push("/");
     } catch (rawErrors) {
-      if (
-        typeof ((rawErrors as FetchError).info as ApiError).error === "string"
-      ) {
-        setGenericError(<>{rawErrors}</>);
+      const errInfo = (rawErrors as FetchError).info as ApiError;
+      const err = errInfo ? errInfo.error : undefined;
+      if (err) {
+        setGenericError(<>{err}</>);
       } else {
         // might occur if an unknown type of response occurs e.g. server down
         setGenericError(<>Oops, something went wrong.</>);

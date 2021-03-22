@@ -26,9 +26,9 @@ export function useSelf() {
     await apiFetch("/users/logout");
     return;
   };
-  const login = async (emailOrUsername: string, password: string) => {
+  const login = async (username: string, password: string) => {
     await mutate(
-      bodyApiFetch("/users/login", "POST", { emailOrUsername, password }),
+      bodyApiFetch("/users/login", "POST", { username, password }),
       false
     );
     return;
