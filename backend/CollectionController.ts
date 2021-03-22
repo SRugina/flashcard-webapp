@@ -201,17 +201,17 @@ const deleteCollection = async (request: ApiRequest) => {
 CollectionController.get("/", withUser, getAllCollections)
   .post("/", withUser, createCollection)
   .get("/:colId", withUser, getCollection)
-  .update("/:colId", withUser, updateCollection)
+  .patch("/:colId", withUser, updateCollection)
   .delete("/:colId", withUser, deleteCollection)
   .post("/:colId/flashcards/", withUser, createFlashcard)
   .get("/:colId/flashcards/:cardId/metadata", withUser, getFlashcardMetadata)
   .get("/:colId/flashcards/:cardId/layers", withUser, getFlashcardLayers)
-  .update("/:colId/flashcards/:cardId/title", withUser, updateFlashcardTitle)
-  .update("/:colId/flashcards/:cardId/layers", withUser, updateFlashcardLayers)
+  .patch("/:colId/flashcards/:cardId/title", withUser, updateFlashcardTitle)
+  .patch("/:colId/flashcards/:cardId/layers", withUser, updateFlashcardLayers)
   .delete("/:colId/flashcards/:cardId", withUser, deleteFlashcard)
   .post("/:colId/subcollections/", withUser, createSubCollection)
   .get("/:colId/subcollections/:subColId", withUser, getSubCollection)
-  .update("/:colId/subcollections/:subColId", withUser, updateSubCollection)
+  .patch("/:colId/subcollections/:subColId", withUser, updateSubCollection)
   .delete("/:colId/subcollections/:subColId", withUser, deleteSubCollection)
   .post(
     "/:colId/subcollections/:subColId/flashcards/",
@@ -228,12 +228,12 @@ CollectionController.get("/", withUser, getAllCollections)
     withUser,
     getFlashcardLayers
   )
-  .update(
+  .patch(
     "/:colId/subcollections/:subColId/flashcards/:cardId/title",
     withUser,
     updateFlashcardTitle
   )
-  .update(
+  .patch(
     "/:colId/subcollections/:subColId/flashcards/:cardId/layers",
     withUser,
     updateFlashcardLayers

@@ -18,6 +18,8 @@ const LoginPage = () => {
       await login(username, password);
       await router.push("/");
     } catch (rawErrors) {
+      // eslint-disable-next-line
+      console.log("RawErrors", rawErrors);
       if (!(typeof rawErrors === "string")) {
         // might occur if an unknown type of response occurs e.g. server down
         setGenericError(<>Oops, something went wrong.</>);

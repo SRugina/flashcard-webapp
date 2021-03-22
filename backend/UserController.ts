@@ -289,8 +289,8 @@ UserController.post("/", withoutUser, create)
   .post("/login", withoutUser, login)
   .get("/logout", withUser, logout)
   .get("/self", withUser, getSelf)
-  .update("/self", withUser, updateSelf)
-  .update("/self/password", withUser, updateSelfPassword)
+  .patch("/self", withUser, updateSelf)
+  .patch("/self/password", withUser, updateSelfPassword)
   .delete("/self", withUser, deleteSelf);
 
 export default UserController;

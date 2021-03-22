@@ -61,6 +61,8 @@ export const bodyApiFetch = async <JSON = any>(
       body: body ? JSON.stringify(body) : undefined,
     });
   } catch (err) {
+    // eslint-disable-next-line
+    console.log("BodyFetchErr", err);
     const error = err as FetchError;
     if ([400, 422, 404].includes(error.status)) {
       // our backend code sent the error
