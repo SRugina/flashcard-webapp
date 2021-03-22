@@ -29,6 +29,8 @@ export const handleRequest = async (request: Request) => {
   const res = (await router.handle(request)) as Response;
   res.headers.set("Access-Control-Allow-Credentials", "true");
   res.headers.set("Access-Control-Allow-Origin", FRONTEND_ORIGIN_URL);
+  res.headers.set("Access-Control-Allow-Headers", "content-type");
+  res.headers.set("Access-Control-Allow-Methods", "GET,POST,DELETE,PATCH");
   res.headers.set("Content-Type", "application/json;charset=UTF-8");
   res.headers.append("Vary", "Origin"); // https://developers.cloudflare.com/workers/examples/cors-header-proxy
   return res;

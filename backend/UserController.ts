@@ -64,8 +64,8 @@ const create = async (request: Request) => {
 
   const passwordHash = await hash(body.password);
 
-  const existingUser = (await Users.list({ prefix: body.username })).keys[0];
-  if (existingUser) {
+  const userList = (await Users.list({ prefix: `${body.username}:` })).keys;
+  if (userList.length > 0) {
     return new Response(JSON.stringify({ error: "Username already exists" }), {
       status: 422,
     });
@@ -111,14 +111,13 @@ const login = async (request: Request) => {
     );
   }
 
-  const userMetadata = (await Users.list({ prefix: body.username })).keys[0]
-    .metadata as UserMetadata;
+  const userList = (await Users.list({ prefix: `${body.username}:` })).keys;
 
   let user: { id: string; password: string };
-  if (!userMetadata) {
+  if (userList.length === 0) {
     user = { id: "0", password: "" };
   } else {
-    user = userMetadata;
+    user = userList[0].metadata as UserMetadata;
   }
 
   const same = await verify(body.password, user.password);
@@ -289,8 +288,8 @@ UserController.post("/", withoutUser, create)
   .post("/login", withoutUser, login)
   .get("/logout", withUser, logout)
   .get("/self", withUser, getSelf)
-  .update("/self", withUser, updateSelf)
-  .update("/self/password", withUser, updateSelfPassword)
+  .patch("/self", withUser, updateSelf)
+  .patch("/self/password", withUser, updateSelfPassword)
   .delete("/self", withUser, deleteSelf);
 
 export default UserController;

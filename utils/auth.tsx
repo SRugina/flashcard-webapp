@@ -26,9 +26,9 @@ export function useSelf() {
     await apiFetch("/users/logout");
     return;
   };
-  const login = async (emailOrUsername: string, password: string) => {
+  const login = async (username: string, password: string) => {
     await mutate(
-      bodyApiFetch("/users/login", "POST", { emailOrUsername, password }),
+      bodyApiFetch("/users/login", "POST", { username, password }),
       false
     );
     return;
@@ -56,11 +56,11 @@ export function useSelf() {
     }
   };
   const updateSelf = async (updateUser: UpdateUserData) => {
-    await mutate(bodyApiFetch("/users/self", "UPDATE", updateUser), false);
+    await mutate(bodyApiFetch("/users/self", "PATCH", updateUser), false);
   };
   const updatePassword = async (updateUserPassword: UpdateUserPasswordData) => {
     await mutate(
-      bodyApiFetch("/users/self/password", "UPDATE", updateUserPassword),
+      bodyApiFetch("/users/self/password", "PATCH", updateUserPassword),
       false
     );
     return;

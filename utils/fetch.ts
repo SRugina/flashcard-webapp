@@ -52,24 +52,11 @@ export const bodyApiFetch = async <JSON = any>(
   method: RequestInit["method"],
   body?: any
 ): Promise<JSON | false> => {
-  try {
-    return apiFetch<JSON>(path, {
-      method: method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: body ? JSON.stringify(body) : undefined,
-    });
-  } catch (err) {
-    const error = err as FetchError;
-    if ([400, 422, 404].includes(error.status)) {
-      // our backend code sent the error
-      throw (error.info as ApiError).error;
-    } else {
-      // only 422 (unprocessable entity), 400 (badrequesterror) or 401 (unauthorized)
-      // are expected, else occurs then we don't know the format, so throw
-      // info as-is
-      throw error;
-    }
-  }
+  return apiFetch<JSON>(path, {
+    method: method,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: body ? JSON.stringify(body) : undefined,
+  });
 };
