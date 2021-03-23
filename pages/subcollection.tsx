@@ -69,7 +69,7 @@ const SubCollectionIdPage = () => {
               className="text-2xl font-bold overflow-x-auto whitespace-nowrap"
               style={{ maxWidth: "60ch" }}
             >
-              {collection.title}
+              {title}
             </h1>
             <div className="text-nord11 text-center">{genericError}</div>
             <form className="mb-1 mt-2" onSubmit={changeCollection}>
@@ -103,7 +103,7 @@ const SubCollectionIdPage = () => {
                   className="ml-4"
                   onClick={async () => {
                     try {
-                      await addFlashcard({ title });
+                      await addFlashcard({ title: formTitle });
                     } catch (err) {
                       setGenericError(<>{err}</>);
                     }
