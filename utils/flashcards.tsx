@@ -8,7 +8,12 @@ import {
   updateItemData,
 } from "../interfaces";
 import { useGlobal } from "../providers/GlobalProvider";
-import { ApiError, bodyApiFetch, FetchError } from "./fetch";
+import {
+  ApiError,
+  bodyApiFetch,
+  decompressBodyApiFetch,
+  FetchError,
+} from "./fetch";
 
 export function useFlashcardPreview(
   colId: string,
@@ -120,7 +125,7 @@ export function useFlashcard(
     isSub
       ? `/collections/${colId}/subcollections/${subId!}/flashcards/${cardId}/layers`
       : `/collections/${colId}/flashcards/${cardId}/layers`,
-    bodyApiFetch,
+    decompressBodyApiFetch,
     {
       focusThrottleInterval: 1000 * 60 * 15, // limit to one every 15 minutes
       errorRetryInterval: 1000 * 60 * 15, // limit to one every 15 minutes
@@ -142,9 +147,9 @@ export function useFlashcard(
 
   const saveLayers = async () => {
     if (layers) {
-      if (layers.length !== 0) {
+      if (Array.isArray(layers)) {
         try {
-          await bodyApiFetch<Array<LayerData>>(
+          await decompressBodyApiFetch<Array<LayerData>>(
             isSub
               ? `/collections/${colId}/subcollections/${subId!}/flashcards/${cardId}/layers`
               : `/collections/${colId}/flashcards/${cardId}/layers`,
