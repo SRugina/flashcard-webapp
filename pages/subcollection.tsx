@@ -115,7 +115,7 @@ const SubCollectionIdPage = () => {
             </form>
 
             <div className="flex flex-col sm:flex-row sm:flex-wrap overflow-hidden mx-auto p-2">
-              {collection.flashcardData.map((flashcard) => {
+              {(collection.flashcardData || []).map((flashcard) => {
                 return (
                   <Button
                     key={flashcard.id}

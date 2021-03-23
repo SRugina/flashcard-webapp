@@ -134,25 +134,25 @@ const CollectionIdPage = () => {
             </form>
 
             <div className="flex flex-col sm:flex-row sm:flex-wrap overflow-hidden mx-auto p-2">
-              {(collection as getCollectionResponse).subCollectionData.map(
-                (subCollection) => {
-                  return (
-                    <Button
-                      key={subCollection.id}
-                      type="link"
-                      color="custom"
-                      size="custom"
-                      href={`/subcollection?collectionId=${collectionId}&subCollectionId=${subCollection.id}`}
-                      className="h-32 w-48 max-w-full rounded overflow-hidden line-clamp-4 my-1 p-2 mx-auto bg-gray-300 text-xl font-bold text-gray-400"
-                    >
-                      <p className="overflow-ellipsis overflow-hidden break-words leading-tight">
-                        {subCollection.title}
-                      </p>
-                    </Button>
-                  );
-                }
-              )}
-              {collection.flashcardData.map((flashcard) => {
+              {(
+                (collection as getCollectionResponse).subCollectionData || []
+              ).map((subCollection) => {
+                return (
+                  <Button
+                    key={subCollection.id}
+                    type="link"
+                    color="custom"
+                    size="custom"
+                    href={`/subcollection?collectionId=${collectionId}&subCollectionId=${subCollection.id}`}
+                    className="h-32 w-48 max-w-full rounded overflow-hidden line-clamp-4 my-1 p-2 mx-auto bg-gray-300 text-xl font-bold text-gray-400"
+                  >
+                    <p className="overflow-ellipsis overflow-hidden break-words leading-tight">
+                      {subCollection.title}
+                    </p>
+                  </Button>
+                );
+              })}
+              {(collection.flashcardData || []).map((flashcard) => {
                 return (
                   <Button
                     key={flashcard.id}
