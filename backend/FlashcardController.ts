@@ -27,13 +27,15 @@ export const formatFlashcardKey = (request: ApiRequest) => {
 export const createFlashcard = async (request: ApiRequest) => {
   const body = (await request.json()) as FlashcardMetadata;
   if (!body.title) {
-    return new Response(JSON.stringify({ error: "Missing card title" }), {
+    return new Response(JSON.stringify({ error: "Missing flashcard title" }), {
       status: 400,
     });
   }
-  if (body.title.length === 0) {
+  if (body.title.length === 0 || body.title.length > 60) {
     return new Response(
-      JSON.stringify({ error: "Flashcard title cannot be empty" }),
+      JSON.stringify({
+        error: "Title must have length of at least 1 but no more than 60",
+      }),
       {
         status: 400,
       }
@@ -57,7 +59,7 @@ export const createFlashcard = async (request: ApiRequest) => {
   return new Response(JSON.stringify(newData));
 };
 
-export const getFlashcardMetadata = async (request: ApiRequest) => {
+export const getFlashcardPreview = async (request: ApiRequest) => {
   const flashcard = await Flashcards.getWithMetadata<FlashcardMetadata>(
     formatFlashcardKey(request),
     "stream"
@@ -94,9 +96,19 @@ export const getFlashcardLayers = async (request: ApiRequest) => {
 export const updateFlashcardTitle = async (request: ApiRequest) => {
   const body = (await request.json()) as FlashcardMetadata;
   if (!body.title) {
-    return new Response(JSON.stringify({ error: "Missing title" }), {
+    return new Response(JSON.stringify({ error: "Missing flashcard title" }), {
       status: 400,
     });
+  }
+  if (body.title.length === 0 || body.title.length > 60) {
+    return new Response(
+      JSON.stringify({
+        error: "Title must have length of at least 1 but no more than 60",
+      }),
+      {
+        status: 400,
+      }
+    );
   }
 
   const flashcard = await Flashcards.getWithMetadata<FlashcardMetadata>(
@@ -112,17 +124,18 @@ export const updateFlashcardTitle = async (request: ApiRequest) => {
 
   const cardTitle = flashcard.metadata!.title;
 
-  if (body.title === cardTitle) {
-    return new Response(
-      JSON.stringify({ success: true, message: "Flashcard title unchanged" })
-    );
+  const res: FlashcardPreview = {
+    id: (request.params as { [k: string]: string }).cardId,
+    title: body.title,
+  };
+
+  if (res.title !== cardTitle) {
+    await Flashcards.put(formatFlashcardKey(request), flashcard.value!, {
+      metadata: { title: res.title },
+    });
   }
 
-  await Flashcards.put(formatFlashcardKey(request), flashcard.value!, {
-    metadata: { title: body.title },
-  });
-
-  return new Response(JSON.stringify({ success: true }));
+  return new Response(JSON.stringify(res));
 };
 
 export const updateFlashcardLayers = async (request: ApiRequest) => {

@@ -20,7 +20,6 @@ export interface SubCollectionPreview extends SubCollectionMetadata {
 }
 
 export interface getSubCollectionResponse extends SubCollectionPreview {
-  subCollectionData: Array<SubCollectionPreview>;
   flashcardData: Array<FlashcardPreview>;
 }
 
@@ -48,6 +47,14 @@ export type LayerData = {
 export type CardItemData = {
   id: number;
   type: "text" | "image";
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+  contents: any;
+};
+
+export type updateItemData = {
   left: number;
   top: number;
   width: number;

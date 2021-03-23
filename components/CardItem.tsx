@@ -1,7 +1,7 @@
 import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import { Resizable, ResizeCallbackData } from "react-resizable";
-import { CardItemData } from "../interfaces";
+import { CardItemData, updateItemData } from "../interfaces";
 import { useGlobal } from "../providers/GlobalProvider";
 import CardImage from "./CardImage";
 import CardText from "./CardText";
@@ -9,6 +9,11 @@ import CardText from "./CardText";
 export interface CardItemProps extends CardItemData {
   parent: HTMLElement | null;
   parentId: number;
+  updateItem: (
+    itemId: number,
+    layerId: number,
+    data: updateItemData
+  ) => Promise<void>;
 }
 
 const CardItem = ({
@@ -21,6 +26,7 @@ const CardItem = ({
   height,
   type,
   contents,
+  updateItem,
 }: CardItemProps) => {
   const [deltaPosition, setDeltaPosition] = useState({ x: left, y: top });
   const [size, setSize] = useState({ width, height });
@@ -28,7 +34,7 @@ const CardItem = ({
   const [content, setContent] = useState(contents);
   const nodeRef = useRef(null);
 
-  const { updateItem, setActiveItem } = useGlobal();
+  const { setActiveItem } = useGlobal();
 
   const handleDrag = (_e: DraggableEvent, data: DraggableData) => {
     const { x, y } = deltaPosition;
@@ -44,7 +50,7 @@ const CardItem = ({
   };
 
   useEffect(() => {
-    updateItem(id, parentId, {
+    void updateItem(id, parentId, {
       left: deltaPosition.x,
       top: deltaPosition.y,
       width: size.width,

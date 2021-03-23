@@ -23,15 +23,17 @@ export const createSubCollection = async (request: ApiRequest) => {
   const body = (await request.json()) as SubCollectionMetadata;
   if (!body.title) {
     return new Response(
-      JSON.stringify({ error: "Missing subCollection title" }),
+      JSON.stringify({ error: "Missing sub-collection title" }),
       {
         status: 400,
       }
     );
   }
-  if (body.title.length === 0) {
+  if (body.title.length === 0 || body.title.length > 60) {
     return new Response(
-      JSON.stringify({ error: "SubCollection title cannot be empty" }),
+      JSON.stringify({
+        error: "Title must have length of at least 1 but no more than 60",
+      }),
       {
         status: 400,
       }
@@ -67,28 +69,9 @@ export const getSubCollection = async (request: ApiRequest) => {
 
   if (!subCollectionTitle) {
     return new Response(
-      JSON.stringify({ error: "SubCollection does not exist" }),
+      JSON.stringify({ error: "Sub-collection does not exist" }),
       { status: 404 }
     );
-  }
-
-  const subCollections = (
-    await SubCollections.list({
-      prefix: `${formatSubCollectionKey(
-        request,
-        params.colId,
-        params.subColId
-      )}:`,
-    })
-  ).keys;
-
-  const subCollectionData: Array<SubCollectionPreview> = [];
-  for (const subCollection of subCollections) {
-    const metadata = subCollection.metadata as SubCollectionMetadata;
-    subCollectionData.push({
-      id: formatIdFromKey(subCollection.name),
-      ...metadata,
-    });
   }
 
   const flashcards = (
@@ -113,7 +96,6 @@ export const getSubCollection = async (request: ApiRequest) => {
   const res: getSubCollectionResponse = {
     id: params.subColId,
     title: subCollectionTitle,
-    subCollectionData,
     flashcardData,
   };
 
@@ -123,9 +105,22 @@ export const getSubCollection = async (request: ApiRequest) => {
 export const updateSubCollection = async (request: ApiRequest) => {
   const body = (await request.json()) as SubCollectionMetadata;
   if (!body.title) {
-    return new Response(JSON.stringify({ error: "Missing title" }), {
-      status: 400,
-    });
+    return new Response(
+      JSON.stringify({ error: "Missing sub-collection title" }),
+      {
+        status: 400,
+      }
+    );
+  }
+  if (body.title.length === 0 || body.title.length > 60) {
+    return new Response(
+      JSON.stringify({
+        error: "Title must have length of at least 1 but no more than 60",
+      }),
+      {
+        status: 400,
+      }
+    );
   }
 
   const params = request.params as { colId: string; subColId: string };
@@ -138,14 +133,8 @@ export const updateSubCollection = async (request: ApiRequest) => {
 
   if (!subCollectionTitle) {
     return new Response(
-      JSON.stringify({ error: "SubCollection does not exist" }),
+      JSON.stringify({ error: "Sub-collection does not exist" }),
       { status: 404 }
-    );
-  }
-
-  if (body.title === subCollectionTitle) {
-    return new Response(
-      JSON.stringify({ success: true, message: "SubCollection unchanged" })
     );
   }
 
@@ -154,13 +143,15 @@ export const updateSubCollection = async (request: ApiRequest) => {
     title: body.title,
   };
 
-  await SubCollections.put(
-    formatSubCollectionKey(request, newData.id, params.subColId),
-    "",
-    {
-      metadata: { title: newData.title },
-    }
-  );
+  if (body.title !== subCollectionTitle) {
+    await SubCollections.put(
+      formatSubCollectionKey(request, params.colId, params.subColId),
+      "",
+      {
+        metadata: { title: newData.title },
+      }
+    );
+  }
 
   return new Response(JSON.stringify(newData));
 };
@@ -171,19 +162,6 @@ export const deleteSubCollection = async (request: ApiRequest) => {
   await SubCollections.delete(
     formatSubCollectionKey(request, params.colId, params.subColId)
   );
-
-  const subCollections = (
-    await SubCollections.list({
-      prefix: `${formatSubCollectionKey(
-        request,
-        params.colId,
-        params.subColId
-      )}:`,
-    })
-  ).keys;
-  for (const subCollection of subCollections) {
-    await SubCollections.delete(subCollection.name);
-  }
 
   const flashcards = (
     await Flashcards.list({

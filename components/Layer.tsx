@@ -1,17 +1,30 @@
 import { useState } from "react";
-import { LayerData } from "../interfaces";
+import { LayerData, updateItemData } from "../interfaces";
 import { useGlobal } from "../providers/GlobalProvider";
 import { useCanvas } from "../utils/canvas";
 import CardItem from "./CardItem";
 
 export interface LayerProps extends LayerData {
   zIndex: number;
+  updateItem: (
+    itemId: number,
+    layerId: number,
+    data: updateItemData
+  ) => Promise<void>;
+  updateDrawLayer: (layerId: number, data: string) => Promise<void>;
 }
 
-const Layer = ({ id, zIndex, contents, drawContents }: LayerProps) => {
+const Layer = ({
+  id,
+  zIndex,
+  contents,
+  drawContents,
+  updateItem,
+  updateDrawLayer,
+}: LayerProps) => {
   const { activeLayer, isDrawingMode } = useGlobal();
   const [parent, setParent] = useState<HTMLDivElement | null>(null);
-  const { setCanvas, error } = useCanvas(drawContents, id);
+  const { setCanvas, error } = useCanvas(drawContents, id, updateDrawLayer);
 
   return error ? (
     <div>{error}</div>
@@ -28,6 +41,7 @@ const Layer = ({ id, zIndex, contents, drawContents }: LayerProps) => {
               key={element.id}
               parent={parent}
               parentId={id}
+              updateItem={updateItem}
               {...element}
             ></CardItem>
           );

@@ -115,7 +115,7 @@ const Navbar = memo(() => {
               >
                 <Button
                   type="link"
-                  href="/"
+                  href="/collections"
                   color="custom"
                   size="small"
                   className="mt-0 sm:mx-2 block hover:bg-gray-200 focus:bg-gray-200"

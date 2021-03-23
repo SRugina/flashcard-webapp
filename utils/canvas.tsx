@@ -12,13 +12,12 @@ const pointerEvents: Array<
   "pointerdown" | "pointerup" | "pointermove" | "pointerenter" | "pointerleave"
 > = ["pointerdown", "pointerup", "pointermove", "pointerenter", "pointerleave"];
 
-export function useCanvas(drawContents: string, layerId: number) {
-  const {
-    penColourRef,
-    penRadiusRef,
-    penEraseRef,
-    updateDrawLayer,
-  } = useGlobal();
+export function useCanvas(
+  drawContents: string,
+  layerId: number,
+  updateDrawLayer: (layerId: number, data: string) => Promise<void>
+) {
+  const { penColourRef, penRadiusRef, penEraseRef } = useGlobal();
   const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
   const [canvasCtx, setCanvasCtx] = useState<CanvasRenderingContext2D | null>(
     null
@@ -39,7 +38,7 @@ export function useCanvas(drawContents: string, layerId: number) {
 
   // update internal layer data
   useEffect(() => {
-    updateDrawLayer(layerId, drawContent);
+    void updateDrawLayer(layerId, drawContent);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [drawContent]);
 

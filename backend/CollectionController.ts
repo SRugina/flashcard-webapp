@@ -14,7 +14,7 @@ import {
 import { encodeHex, random128bit } from "./utils/crypto";
 import {
   createFlashcard,
-  getFlashcardMetadata,
+  getFlashcardPreview,
   getFlashcardLayers,
   updateFlashcardTitle,
   updateFlashcardLayers,
@@ -52,9 +52,11 @@ const createCollection = async (request: ApiRequest) => {
       status: 400,
     });
   }
-  if (body.title.length === 0) {
+  if (body.title.length === 0 || body.title.length > 60) {
     return new Response(
-      JSON.stringify({ error: "Collection title cannot be empty" }),
+      JSON.stringify({
+        error: "Title must have length of at least 1 but no more than 60",
+      }),
       {
         status: 400,
       }
@@ -138,6 +140,16 @@ const updateCollection = async (request: ApiRequest) => {
       status: 400,
     });
   }
+  if (body.title.length === 0 || body.title.length > 60) {
+    return new Response(
+      JSON.stringify({
+        error: "Title must have length of at least 1 but no more than 60",
+      }),
+      {
+        status: 400,
+      }
+    );
+  }
 
   const params = request.params as { colId: string };
   const collectionTitle = (
@@ -200,7 +212,7 @@ CollectionController.get("/", withUser, getAllCollections)
   .patch("/:colId", withUser, updateCollection)
   .delete("/:colId", withUser, deleteCollection)
   .post("/:colId/flashcards/", withUser, createFlashcard)
-  .get("/:colId/flashcards/:cardId/metadata", withUser, getFlashcardMetadata)
+  .get("/:colId/flashcards/:cardId/preview", withUser, getFlashcardPreview)
   .get("/:colId/flashcards/:cardId/layers", withUser, getFlashcardLayers)
   .patch("/:colId/flashcards/:cardId/title", withUser, updateFlashcardTitle)
   .patch("/:colId/flashcards/:cardId/layers", withUser, updateFlashcardLayers)
@@ -215,9 +227,9 @@ CollectionController.get("/", withUser, getAllCollections)
     createFlashcard
   )
   .get(
-    "/:colId/subcollections/:subColId/flashcards/:cardId/metadata",
+    "/:colId/subcollections/:subColId/flashcards/:cardId/preview",
     withUser,
-    getFlashcardMetadata
+    getFlashcardPreview
   )
   .get(
     "/:colId/subcollections/:subColId/flashcards/:cardId/layers",

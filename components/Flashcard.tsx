@@ -1,7 +1,16 @@
-import { FlashcardData } from "../interfaces";
+import { FlashcardData, updateItemData } from "../interfaces";
 import Layer from "./Layer";
 
-const Flashcard = ({ layers }: FlashcardData) => {
+interface Props extends FlashcardData {
+  updateItem: (
+    itemId: number,
+    layerId: number,
+    data: updateItemData
+  ) => Promise<void>;
+  updateDrawLayer: (layerId: number, data: string) => Promise<void>;
+}
+
+const Flashcard = ({ layers, updateItem, updateDrawLayer }: Props) => {
   return (
     <div
       className="relative bg-white rounded-lg"
@@ -26,7 +35,15 @@ const Flashcard = ({ layers }: FlashcardData) => {
         }
       </div>
       {layers.map((layer, index) => {
-        return <Layer key={layer.id} zIndex={index} {...layer} />;
+        return (
+          <Layer
+            key={layer.id}
+            zIndex={index}
+            updateItem={updateItem}
+            updateDrawLayer={updateDrawLayer}
+            {...layer}
+          />
+        );
       })}
     </div>
   );
