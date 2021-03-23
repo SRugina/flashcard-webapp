@@ -169,26 +169,32 @@ export function useFlashcard(
 
   const addNewLayer = async () => {
     if (layers) {
-      await mutateLayers(
-        [
-          ...layers,
-          {
-            id: layers[layers.length - 1]?.id + 1 || 0,
-            contents: [],
-            drawContents: "",
-          },
-        ],
-        false
-      );
+      await mutateLayers((layers) => {
+        if (layers) {
+          return [
+            ...layers,
+            {
+              id: layers[layers.length - 1]?.id + 1 || 0,
+              contents: [],
+              drawContents: "",
+            },
+          ] as Array<LayerData>;
+        } else {
+          return layers;
+        }
+      }, false);
     }
   };
 
   const deleteCurrentLayer = async () => {
     if (layers) {
-      await mutateLayers(
-        [...layers].filter((layer) => layer.id !== activeLayer),
-        false
-      );
+      await mutateLayers((layers) => {
+        if (layers) {
+          return [...layers].filter((layer) => layer.id !== activeLayer);
+        } else {
+          return layers;
+        }
+      }, false);
     }
   };
 
@@ -198,45 +204,53 @@ export function useFlashcard(
     data: updateItemData
   ) => {
     if (layers) {
-      await mutateLayers(
-        [...layers].map((layer) => {
-          if (layer.id === layerId) {
-            const newContents = layer.contents.map((item) => {
-              if (item.id === itemId) {
-                return {
-                  ...item,
-                  ...data,
-                };
-              }
-              return item;
-            });
-            return {
-              ...layer,
-              contents: newContents,
-            };
-          }
-          return layer;
-        })
-      );
+      await mutateLayers((layers) => {
+        if (layers) {
+          return [...layers].map((layer) => {
+            if (layer.id === layerId) {
+              const newContents = layer.contents.map((item) => {
+                if (item.id === itemId) {
+                  return {
+                    ...item,
+                    ...data,
+                  };
+                }
+                return item;
+              });
+              return {
+                ...layer,
+                contents: newContents,
+              };
+            }
+            return layer;
+          });
+        } else {
+          return layers;
+        }
+      }, false);
     }
   };
 
   const deleteCurrentItem = async () => {
     if (layers) {
-      await mutateLayers(
-        [...layers].map((layer) => {
-          if (layer.id === activeLayer) {
-            const newContents = layer.contents.filter(
-              (item) => item.id !== activeItem
-            );
-            return {
-              ...layer,
-              contents: newContents,
-            };
-          }
-          return layer;
-        })
-      );
+      await mutateLayers((layers) => {
+        if (layers) {
+          return [...layers].map((layer) => {
+            if (layer.id === activeLayer) {
+              const newContents = layer.contents.filter(
+                (item) => item.id !== activeItem
+              );
+              return {
+                ...layer,
+                contents: newContents,
+              };
+            }
+            return layer;
+          });
+        } else {
+          return layers;
+        }
+      }, false);
       // reset active item as item no longer exists
       setActiveItem(-1);
     }
@@ -244,75 +258,88 @@ export function useFlashcard(
 
   const addTextItem = async () => {
     if (layers) {
-      await mutateLayers(
-        [...layers].map((layer) => {
-          if (layer.id === activeLayer) {
-            const newContents = [
-              ...layer.contents,
-              {
-                id: layer.contents[layer.contents.length - 1]?.id + 1 || 0,
-                type: "text",
-                left: 0,
-                top: 0,
-                width: 200,
-                height: 100,
-                contents: [
-                  {
-                    children: [
-                      {
-                        text: "**bold**, _italic_, ~strike~, `mono`,\n> Quote",
-                      },
-                    ],
-                  },
-                ],
-              } as CardItemData,
-            ];
-            return { ...layer, contents: newContents };
-          }
-          return layer;
-        })
-      );
+      await mutateLayers((layers) => {
+        if (layers) {
+          return [...layers].map((layer) => {
+            if (layer.id === activeLayer) {
+              const newContents = [
+                ...layer.contents,
+                {
+                  id: layer.contents[layer.contents.length - 1]?.id + 1 || 0,
+                  type: "text",
+                  left: 0,
+                  top: 0,
+                  width: 200,
+                  height: 100,
+                  contents: [
+                    {
+                      children: [
+                        {
+                          text:
+                            "**bold**, _italic_, ~strike~, `mono`,\n> Quote",
+                        },
+                      ],
+                    },
+                  ],
+                } as CardItemData,
+              ];
+              return { ...layer, contents: newContents };
+            }
+            return layer;
+          });
+        } else {
+          return layers;
+        }
+      }, false);
     }
   };
 
   const addImageItem = async () => {
     if (layers) {
-      await mutateLayers(
-        [...layers].map((layer) => {
-          if (layer.id === activeLayer) {
-            const newContents = [
-              ...layer.contents,
-              {
-                id: layer.contents[layer.contents.length - 1]?.id + 1 || 0,
-                type: "image",
-                left: 0,
-                top: 0,
-                width: 200,
-                height: 200,
-                contents: "",
-              } as CardItemData,
-            ];
-            return { ...layer, contents: newContents };
-          }
-          return layer;
-        })
-      );
+      await mutateLayers((layers) => {
+        if (layers) {
+          return [...layers].map((layer) => {
+            if (layer.id === activeLayer) {
+              const newContents = [
+                ...layer.contents,
+                {
+                  id: layer.contents[layer.contents.length - 1]?.id + 1 || 0,
+                  type: "image",
+                  left: 0,
+                  top: 0,
+                  width: 200,
+                  height: 200,
+                  contents: "",
+                } as CardItemData,
+              ];
+              return { ...layer, contents: newContents };
+            }
+            return layer;
+          });
+        } else {
+          return layers;
+        }
+      }, false);
     }
   };
 
   const updateDrawLayer = async (layerId: number, data: string) => {
     if (layers) {
-      await mutateLayers(
-        [...layers].map((layer) => {
-          if (layer.id === layerId) {
-            return {
-              ...layer,
-              drawContents: data,
-            };
-          }
-          return layer;
-        })
-      );
+      await mutateLayers((layers) => {
+        if (layers) {
+          return [...layers].map((layer) => {
+            if (layer.id === layerId) {
+              return {
+                ...layer,
+                drawContents: data,
+              };
+            }
+            return layer;
+          });
+        } else {
+          return layers;
+        }
+      }, false);
     }
   };
 
