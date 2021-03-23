@@ -52,9 +52,13 @@ export const createFlashcard = async (request: ApiRequest) => {
 
   (request.params as { [k: string]: string }).cardId = id;
 
-  await Flashcards.put(formatFlashcardKey(request), JSON.stringify(newData), {
-    metadata: { title: newData.title },
-  });
+  await Flashcards.put(
+    formatFlashcardKey(request),
+    JSON.stringify(newData.layers),
+    {
+      metadata: { title: newData.title },
+    }
+  );
 
   return new Response(JSON.stringify(newData));
 };
@@ -65,13 +69,13 @@ export const getFlashcardPreview = async (request: ApiRequest) => {
     "stream"
   );
 
-  if (!flashcard) {
+  if (!flashcard.metadata) {
     return new Response(JSON.stringify({ error: "Flashcard does not exist" }), {
       status: 404,
     });
   }
 
-  const title = flashcard.metadata!.title;
+  const title = flashcard.metadata.title;
 
   const res: FlashcardPreview = {
     id: (request.params as { [k: string]: string }).cardId,
@@ -116,13 +120,13 @@ export const updateFlashcardTitle = async (request: ApiRequest) => {
     "stream"
   );
 
-  if (!flashcard) {
+  if (!flashcard.metadata) {
     return new Response(JSON.stringify({ error: "Flashcard does not exist" }), {
       status: 404,
     });
   }
 
-  const cardTitle = flashcard.metadata!.title;
+  const cardTitle = flashcard.metadata.title;
 
   const res: FlashcardPreview = {
     id: (request.params as { [k: string]: string }).cardId,
@@ -150,7 +154,7 @@ export const updateFlashcardLayers = async (request: ApiRequest) => {
     "stream"
   );
 
-  if (!flashcard) {
+  if (!flashcard.metadata) {
     return new Response(JSON.stringify({ error: "Flashcard does not exist" }), {
       status: 404,
     });

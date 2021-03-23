@@ -16,7 +16,6 @@ export function useFlashcardPreview(
   isSub = false,
   subId?: string
 ) {
-  console.error("Preview params:", colId, cardId, isSub, subId);
   const {
     data: previewData,
     error: previewError,
@@ -114,7 +113,6 @@ export function useFlashcard(
   isSub = false,
   subId?: string
 ) {
-  console.error("Layer params:", colId, cardId, isSub, subId);
   const { data: layers, error: layerDataError, mutate: mutateLayers } = useSWR<
     Array<LayerData> | false,
     FetchError

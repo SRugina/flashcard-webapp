@@ -35,9 +35,13 @@ const CollectionIdPage = () => {
   const [title, setTitle] = useState("");
   const [formTitle, setFormTitle] = useState("");
 
+  useEffect(() => console.warn("Collection in page: ", collection, colError), [
+    collection,
+    colError,
+  ]);
+
   useEffect(() => {
     if (collection) {
-      console.warn(collection);
       if (collection.title) setTitle(collection.title);
     }
   }, [collection]);

@@ -98,6 +98,12 @@ export function useCurrentCollection(
       errorRetryInterval: 1000 * 60 * 15, // limit to one every 15 minutes
     }
   );
+
+  useEffect(() => console.warn("Collection in hook: ", data, error), [
+    data,
+    error,
+  ]);
+
   const [colError, setColError] = useState("");
   useEffect(() => {
     const errInfo = error ? (error.info as ApiError) : undefined;
