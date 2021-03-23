@@ -223,7 +223,7 @@ const deleteSelf = async (request: ApiRequest) => {
 
   const collections = (
     await Collections.list({
-      prefix: formatUserKey(request),
+      prefix: `${formatUserKey(request)}:`,
     })
   ).keys;
   for (const collection of collections) {
@@ -232,7 +232,7 @@ const deleteSelf = async (request: ApiRequest) => {
 
   const subCollections = (
     await SubCollections.list({
-      prefix: formatUserKey(request),
+      prefix: `${formatUserKey(request)}:`,
     })
   ).keys;
   for (const subCollection of subCollections) {
@@ -241,7 +241,7 @@ const deleteSelf = async (request: ApiRequest) => {
 
   const flashcards = (
     await Flashcards.list({
-      prefix: formatUserKey(request),
+      prefix: `${formatUserKey(request)}:`,
     })
   ).keys;
   for (const flashcard of flashcards) {

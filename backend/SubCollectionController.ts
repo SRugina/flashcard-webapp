@@ -74,7 +74,11 @@ export const getSubCollection = async (request: ApiRequest) => {
 
   const subCollections = (
     await SubCollections.list({
-      prefix: formatSubCollectionKey(request, params.colId, params.subColId),
+      prefix: `${formatSubCollectionKey(
+        request,
+        params.colId,
+        params.subColId
+      )}:`,
     })
   ).keys;
 
@@ -89,7 +93,11 @@ export const getSubCollection = async (request: ApiRequest) => {
 
   const flashcards = (
     await Flashcards.list({
-      prefix: formatSubCollectionKey(request, params.colId, params.subColId),
+      prefix: `${formatSubCollectionKey(
+        request,
+        params.colId,
+        params.subColId
+      )}:`,
     })
   ).keys;
 
@@ -166,7 +174,11 @@ export const deleteSubCollection = async (request: ApiRequest) => {
 
   const subCollections = (
     await SubCollections.list({
-      prefix: formatSubCollectionKey(request, params.colId, params.subColId),
+      prefix: `${formatSubCollectionKey(
+        request,
+        params.colId,
+        params.subColId
+      )}:`,
     })
   ).keys;
   for (const subCollection of subCollections) {
@@ -175,7 +187,11 @@ export const deleteSubCollection = async (request: ApiRequest) => {
 
   const flashcards = (
     await Flashcards.list({
-      prefix: formatSubCollectionKey(request, params.colId, params.subColId),
+      prefix: `${formatSubCollectionKey(
+        request,
+        params.colId,
+        params.subColId
+      )}:`,
     })
   ).keys;
   for (const flashcard of flashcards) {

@@ -34,7 +34,7 @@ export const formatCollectionKey = (request: ApiRequest, colId: string) => {
 };
 
 const getAllCollections = async (request: ApiRequest) => {
-  const list = (await Collections.list({ prefix: `user:${request.userId!}` }))
+  const list = (await Collections.list({ prefix: `user:${request.userId!}:` }))
     .keys;
 
   const data: Array<CollectionPreview> = [];
@@ -93,7 +93,7 @@ const getCollection = async (request: ApiRequest) => {
 
   const subCollections = (
     await SubCollections.list({
-      prefix: formatCollectionKey(request, params.colId),
+      prefix: `${formatCollectionKey(request, params.colId)}:`,
     })
   ).keys;
 
@@ -108,7 +108,7 @@ const getCollection = async (request: ApiRequest) => {
 
   const flashcards = (
     await Flashcards.list({
-      prefix: formatCollectionKey(request, params.colId),
+      prefix: `${formatCollectionKey(request, params.colId)}:`,
     })
   ).keys;
 
@@ -154,20 +154,16 @@ const updateCollection = async (request: ApiRequest) => {
     );
   }
 
-  if (body.title === collectionTitle) {
-    return new Response(
-      JSON.stringify({ success: true, message: "Collection unchanged" })
-    );
-  }
-
   const newData: CollectionPreview = {
     id: params.colId,
     title: body.title,
   };
 
-  await Collections.put(formatCollectionKey(request, newData.id), "", {
-    metadata: { title: newData.title },
-  });
+  if (body.title !== collectionTitle) {
+    await Collections.put(formatCollectionKey(request, newData.id), "", {
+      metadata: { title: newData.title },
+    });
+  }
 
   return new Response(JSON.stringify(newData));
 };
@@ -179,7 +175,7 @@ const deleteCollection = async (request: ApiRequest) => {
 
   const subCollections = (
     await SubCollections.list({
-      prefix: formatCollectionKey(request, params.colId),
+      prefix: `${formatCollectionKey(request, params.colId)}:`,
     })
   ).keys;
   for (const subCollection of subCollections) {
@@ -188,7 +184,7 @@ const deleteCollection = async (request: ApiRequest) => {
 
   const flashcards = (
     await Flashcards.list({
-      prefix: formatCollectionKey(request, params.colId),
+      prefix: `${formatCollectionKey(request, params.colId)}:`,
     })
   ).keys;
   for (const flashcard of flashcards) {
