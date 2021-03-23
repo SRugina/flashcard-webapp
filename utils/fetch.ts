@@ -91,8 +91,11 @@ export const decompressBodyApiFetch = async <JSON = any>(
       } as FetchError;
     }
     const raw = await res.text();
+    console.warn("Raw data", raw);
     const data = decompress(raw);
+    console.warn("Decompressed data", data);
     const json: JSON = JSON.parse(data!) as JSON;
+    console.warn("JSON data", json);
     return json;
   } catch (err) {
     const error = err as FetchError;

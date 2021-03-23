@@ -359,7 +359,7 @@ export function useFlashcard(
       saveLayers,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [layers, layerError]
+    [layers, layerError, activeLayer, activeItem]
   );
 
   return values;
