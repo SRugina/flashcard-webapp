@@ -20,6 +20,7 @@ const Editor = ({ colId, cardId, isSub = false, subId }: Props) => {
     addImageItem,
     updateItem,
     updateDrawLayer,
+    saveLayers,
   } = useFlashcard(colId, cardId, isSub, subId);
 
   const {
@@ -171,6 +172,17 @@ const Editor = ({ colId, cardId, isSub = false, subId }: Props) => {
           ) : (
             <></>
           )}
+
+          <Button
+            type="button"
+            color="success"
+            size="small"
+            className="mt-1"
+            buttonType="button"
+            onClick={async () => await saveLayers()}
+          >
+            Save Changes
+          </Button>
         </div>
       </div>
     )) ||

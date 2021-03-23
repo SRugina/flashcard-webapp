@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 
 type Props = {
   type: "link" | "button";
-  color: "primary" | "warning" | "danger" | "bg" | "custom";
+  color: "primary" | "warning" | "danger" | "bg" | "success" | "custom";
   size: "small" | "medium" | "large" | "custom";
   href?: string;
   buttonType?: "button" | "submit" | "reset";
@@ -49,6 +49,10 @@ const Button = ({
       break;
     case "bg":
       colorClasses = "text-nord0 bg-nord6 hover:bg-gray-300 focus:bg-gray-300";
+      break;
+    case "success":
+      colorClasses =
+        "text-nord14 bg-transparent border-2 border-nord14 hover:border-0 hover:bg-nord14 hover:text-nord6 focus:border-0 focus:bg-nord14 focus:text-nord6";
       break;
   }
   return type === "link" ? (
