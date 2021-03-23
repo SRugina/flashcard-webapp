@@ -24,8 +24,8 @@ const CollectionFlashcardIdPage = () => {
   }, [router.query]);
 
   const { previewData, titleError, updateTitle } = useFlashcardPreview(
-    collectionId,
-    flashcardId
+    router.query.collectionId ? (router.query.collectionId as string) : "",
+    router.query.flashcardId ? (router.query.flashcardId as string) : ""
   );
 
   const [error, setError] = useState(<>{titleError}</>);
