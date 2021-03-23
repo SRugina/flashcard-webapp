@@ -1,33 +1,31 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { FormEvent, useEffect, useState } from "react";
-import Button from "../../../../../components/Button";
-import Input from "../../../../../components/Input";
-import { CollectionMetadata } from "../../../../../interfaces";
-import { useSelf } from "../../../../../utils/auth";
-import { useCurrentCollection } from "../../../../../utils/collections";
+import Button from "../components/Button";
+import Input from "../components/Input";
+import { CollectionMetadata, getCollectionResponse } from "../interfaces";
+import { useSelf } from "../utils/auth";
+import { useCurrentCollection } from "../utils/collections";
 
-const SubCollectionIdPage = () => {
+const CollectionIdPage = () => {
   const { self, protectRoute } = useSelf();
 
   protectRoute();
 
   const router = useRouter();
   const [collectionId, setCollectionId] = useState("");
-  const [subCollectionId, setSubCollectionId] = useState("");
   useEffect(() => {
     if (router.query.collectionId)
       setCollectionId(router.query.collectionId as string);
-    if (router.query.subCollectionId)
-      setSubCollectionId(router.query.subCollectionId as string);
   }, [router.query]);
 
   const {
     collection,
     colError,
     updateCollection,
+    addSubCollection,
     addFlashcard,
-  } = useCurrentCollection(collectionId, true, subCollectionId);
+  } = useCurrentCollection(collectionId);
 
   useEffect(() => {
     setGenericError(<>{colError}</>);
@@ -39,6 +37,7 @@ const SubCollectionIdPage = () => {
 
   useEffect(() => {
     if (collection) {
+      console.warn(collection);
       if (collection.title) setTitle(collection.title);
     }
   }, [collection]);
@@ -47,7 +46,7 @@ const SubCollectionIdPage = () => {
     event.preventDefault();
     try {
       const updateCollectionData: CollectionMetadata = {
-        title,
+        title: formTitle,
       };
       await updateCollection(updateCollectionData);
       return;
@@ -103,6 +102,22 @@ const SubCollectionIdPage = () => {
                   className="ml-4"
                   onClick={async () => {
                     try {
+                      await addSubCollection({ title });
+                    } catch (err) {
+                      setGenericError(<>{err}</>);
+                    }
+                  }}
+                >
+                  Add Collection
+                </Button>
+                <Button
+                  type="button"
+                  buttonType="button"
+                  color="primary"
+                  size="medium"
+                  className="ml-4"
+                  onClick={async () => {
+                    try {
                       await addFlashcard({ title });
                     } catch (err) {
                       setGenericError(<>{err}</>);
@@ -115,6 +130,24 @@ const SubCollectionIdPage = () => {
             </form>
 
             <div className="flex flex-col sm:flex-row sm:flex-wrap overflow-hidden mx-auto p-2">
+              {(collection as getCollectionResponse).subCollectionData.map(
+                (subCollection) => {
+                  return (
+                    <Button
+                      key={subCollection.id}
+                      type="link"
+                      color="custom"
+                      size="custom"
+                      href={`/subcollection?collectionId=${collectionId}&subCollectionId=${subCollection.id}`}
+                      className="h-32 w-48 max-w-full rounded overflow-hidden line-clamp-4 my-1 p-2 mx-auto bg-gray-300 text-xl font-bold text-gray-400"
+                    >
+                      <p className="overflow-ellipsis overflow-hidden break-words leading-tight">
+                        {subCollection.title}
+                      </p>
+                    </Button>
+                  );
+                }
+              )}
               {collection.flashcardData.map((flashcard) => {
                 return (
                   <Button
@@ -122,7 +155,7 @@ const SubCollectionIdPage = () => {
                     type="link"
                     color="custom"
                     size="custom"
-                    href={`/collections/${collectionId}/subcollections/${subCollectionId}/flashcards/${flashcard.id}`}
+                    href={`/collection-flashcard?collectionId=${collectionId}&flashcardId=${flashcard.id}`}
                     className="h-32 w-48 max-w-full rounded overflow-hidden line-clamp-4 my-1 p-2 mx-auto bg-white shadow-md text-xl font-bold text-gray-400"
                   >
                     <p className="overflow-ellipsis overflow-hidden break-words leading-tight">
@@ -140,4 +173,4 @@ const SubCollectionIdPage = () => {
   );
 };
 
-export default SubCollectionIdPage;
+export default CollectionIdPage;

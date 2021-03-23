@@ -1,10 +1,10 @@
 import Head from "next/head";
 import { FormEvent, useEffect, useState } from "react";
-import Button from "../../components/Button";
-import Input from "../../components/Input";
-import { CollectionMetadata } from "../../interfaces";
-import { useSelf } from "../../utils/auth";
-import { useCollections } from "../../utils/collections";
+import Button from "../components/Button";
+import Input from "../components/Input";
+import { CollectionMetadata } from "../interfaces";
+import { useSelf } from "../utils/auth";
+import { useCollections } from "../utils/collections";
 
 const CollectionsPage = () => {
   const { self, protectRoute } = useSelf();
@@ -78,7 +78,7 @@ const CollectionsPage = () => {
                     type="link"
                     color="custom"
                     size="custom"
-                    href={`/collections/${collection.id}`}
+                    href={`/collection?collectionId=${collection.id}`}
                     className="h-32 w-48 max-w-full rounded overflow-hidden line-clamp-4 mt-1 p-2 mx-auto bg-gray-300 text-xl font-bold text-gray-400"
                   >
                     <p className="overflow-ellipsis overflow-hidden break-words leading-tight">

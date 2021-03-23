@@ -1,12 +1,12 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { FormEvent, useEffect, useState } from "react";
-import Button from "../../../../components/Button";
-import Editor from "../../../../components/Editor";
-import Input from "../../../../components/Input";
-import { FlashcardMetadata } from "../../../../interfaces";
-import { useSelf } from "../../../../utils/auth";
-import { useFlashcardPreview } from "../../../../utils/flashcards";
+import Button from "../components/Button";
+import Editor from "../components/Editor";
+import Input from "../components/Input";
+import { FlashcardMetadata } from "../interfaces";
+import { useSelf } from "../utils/auth";
+import { useFlashcardPreview } from "../utils/flashcards";
 
 const CollectionFlashcardIdPage = () => {
   const { self, protectRoute } = useSelf();
@@ -47,7 +47,7 @@ const CollectionFlashcardIdPage = () => {
     event.preventDefault();
     try {
       const updateTitleData: FlashcardMetadata = {
-        title,
+        title: formTitle,
       };
       await updateTitle(updateTitleData);
       return;

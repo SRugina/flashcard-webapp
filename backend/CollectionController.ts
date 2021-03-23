@@ -112,7 +112,7 @@ const getCollection = async (request: ApiRequest) => {
     await Flashcards.list({
       prefix: `${formatCollectionKey(request, params.colId)}:`,
     })
-  ).keys;
+  ).keys.filter((key) => key.name.split(":").length === 6); // only show flashcards that do not belong to sub-collections
 
   const flashcardData: Array<FlashcardPreview> = [];
   for (const flashcard of flashcards) {

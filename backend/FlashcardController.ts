@@ -16,11 +16,11 @@ export const formatFlashcardKey = (request: ApiRequest) => {
       request,
       params.colId,
       params.subColId
-    )}:card:${params.cardId}}`;
+    )}:card:${params.cardId}`;
   } else {
     return `${formatCollectionKey(request, params.colId)}:card:${
       params.cardId
-    }}`;
+    }`;
   }
 };
 
