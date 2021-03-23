@@ -10,7 +10,7 @@ const IndexPage = () => {
       </Head>
       <div className="mx-auto w-full text-center">
         This is a flashcard webapp with drawing, collections, and exporting to
-        PDF support.
+        PDF support. (WIP)
         <br />
         Repository:{" "}
         <Link href="https://github.com/SRugina/flashcard-webapp">
