@@ -140,6 +140,31 @@ export function useFlashcard(
     }
   }, [layerDataError]);
 
+  useEffect(() => {
+    if (layers) {
+      if (layers.length !== 0) {
+        bodyApiFetch<Array<LayerData>>(
+          isSub
+            ? `/collections/${colId}/subcollections/${subId!}/flashcards/${cardId}/layers`
+            : `/collections/${colId}/flashcards/${cardId}/layers`,
+          "PATCH",
+          layers
+        ).catch((rawErrors) => {
+          console.error("Updating layers error:", rawErrors);
+          const errInfo = (rawErrors as FetchError).info as ApiError;
+          const err = errInfo ? errInfo.error : undefined;
+          if (err) {
+            throw err;
+          } else {
+            // might occur if an unknown type of response occurs e.g. server down
+            if (errInfo !== undefined) throw "Oops, something went wrong.";
+          }
+        });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [layers]);
+
   const { activeLayer, activeItem, setActiveItem } = useGlobal();
 
   const addNewLayer = async () => {
