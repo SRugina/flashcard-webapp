@@ -38,7 +38,7 @@ export function useFlashcardPreview(
       setTitleError(err);
     } else {
       // might occur if an unknown type of response occurs e.g. server down
-      setTitleError("Oops, something went wrong.");
+      if (errInfo !== undefined) setTitleError("Oops, something went wrong.");
     }
   }, [previewError]);
 
@@ -86,7 +86,7 @@ export function useFlashcardPreview(
           throw err;
         } else {
           // might occur if an unknown type of response occurs e.g. server down
-          throw "Oops, something went wrong.";
+          if (errInfo !== undefined) throw "Oops, something went wrong.";
         }
       }
     }
@@ -136,7 +136,7 @@ export function useFlashcard(
       setLayerError(err);
     } else {
       // might occur if an unknown type of response occurs e.g. server down
-      setLayerError("Oops, something went wrong.");
+      if (errInfo !== undefined) setLayerError("Oops, something went wrong.");
     }
   }, [layerDataError]);
 

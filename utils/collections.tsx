@@ -28,7 +28,7 @@ export function useCollections() {
       setColError(err);
     } else {
       // might occur if an unknown type of response occurs e.g. server down
-      setColError("Oops, something went wrong.");
+      if (errInfo !== undefined) setColError("Oops, something went wrong.");
     }
   }, [error]);
 
@@ -65,7 +65,7 @@ export function useCollections() {
           throw err;
         } else {
           // might occur if an unknown type of response occurs e.g. server down
-          throw "Oops, something went wrong.";
+          if (errInfo !== undefined) throw "Oops, something went wrong.";
         }
       }
     }
@@ -99,11 +99,6 @@ export function useCurrentCollection(
     }
   );
 
-  useEffect(() => console.warn("Collection in hook: ", data, error), [
-    data,
-    error,
-  ]);
-
   const [colError, setColError] = useState("");
   useEffect(() => {
     const errInfo = error ? (error.info as ApiError) : undefined;
@@ -112,7 +107,7 @@ export function useCurrentCollection(
       setColError(err);
     } else {
       // might occur if an unknown type of response occurs e.g. server down
-      setColError("Oops, something went wrong.");
+      if (errInfo !== undefined) setColError("Oops, something went wrong.");
     }
   }, [error]);
 
@@ -164,7 +159,7 @@ export function useCurrentCollection(
           throw err;
         } else {
           // might occur if an unknown type of response occurs e.g. server down
-          throw "Oops, something went wrong.";
+          if (errInfo !== undefined) throw "Oops, something went wrong.";
         }
       }
     }
@@ -215,7 +210,7 @@ export function useCurrentCollection(
           throw err;
         } else {
           // might occur if an unknown type of response occurs e.g. server down
-          throw "Oops, something went wrong.";
+          if (errInfo !== undefined) throw "Oops, something went wrong.";
         }
       }
     }
@@ -263,7 +258,7 @@ export function useCurrentCollection(
           throw err;
         } else {
           // might occur if an unknown type of response occurs e.g. server down
-          throw "Oops, something went wrong.";
+          if (errInfo !== undefined) throw "Oops, something went wrong.";
         }
       }
     }
