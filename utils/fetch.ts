@@ -1,5 +1,8 @@
 import fetch from "isomorphic-unfetch";
-import { compress, decompress } from "lz-string";
+import {
+  compressToEncodedURIComponent,
+  decompressFromEncodedURIComponent,
+} from "lz-string";
 
 export interface FetchError {
   status: number;
@@ -78,7 +81,9 @@ export const decompressBodyApiFetch = async <JSON = any>(
         headers: {
           "Content-Type": "application/json",
         },
-        body: body ? compress(JSON.stringify(body)) : undefined,
+        body: body
+          ? compressToEncodedURIComponent(JSON.stringify(body))
+          : undefined,
         credentials: "include",
       }
     );
@@ -94,7 +99,7 @@ export const decompressBodyApiFetch = async <JSON = any>(
     // new flashcards do not have their empty array compressed
     if (raw === "[]") return JSON.parse(raw) as JSON;
     console.warn("Raw data", raw);
-    const data = decompress(raw);
+    const data = decompressFromEncodedURIComponent(raw);
     console.warn("Decompressed data", data);
     const json: JSON = JSON.parse(data!) as JSON;
     console.warn("JSON data", json);
