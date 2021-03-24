@@ -12,13 +12,11 @@ const PrintCollectionFlashcardIdPage = () => {
   const router = useRouter();
   const [collectionId, setCollectionId] = useState("");
   const [flashcardId, setFlashcardId] = useState("");
-  const [shouldPrint, setShouldPrint] = useState(false);
   useEffect(() => {
     if (router.query.collectionId)
       setCollectionId(router.query.collectionId as string);
     if (router.query.flashcardId)
       setFlashcardId(router.query.flashcardId as string);
-    if (router.query.shouldPrint) setShouldPrint(true);
   }, [router.query]);
 
   return (
@@ -28,11 +26,7 @@ const PrintCollectionFlashcardIdPage = () => {
           <title>Flashcard Web App</title>
           <meta name="Description" content="A Flashcard Web App" />
         </Head>
-        <PrintFlashcard
-          shouldPrint={shouldPrint}
-          colId={collectionId}
-          cardId={flashcardId}
-        />
+        <PrintFlashcard colId={collectionId} cardId={flashcardId} />
       </div>
     )) ||
     null

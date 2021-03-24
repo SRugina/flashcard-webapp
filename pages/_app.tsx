@@ -15,7 +15,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   const onPrintPage =
     router.pathname === "/print-collection-flashcard" ||
-    router.pathname === "/print-subcollection-flashcard";
+    router.pathname === "/print-collection" ||
+    router.pathname === "/print-subcollection-flashcard" ||
+    router.pathname === "/print-subcollection";
 
   return !onPrintPage ? (
     <Layout>

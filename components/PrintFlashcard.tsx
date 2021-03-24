@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useFlashcard, useFlashcardPreview } from "../utils/flashcards";
+import Button from "./Button";
 import Flashcard from "./Flashcard";
 
 type Props = {
-  shouldPrint: boolean;
   colId: string;
   cardId: string;
   isSub?: boolean;
@@ -12,7 +12,6 @@ type Props = {
 };
 
 const PrintFlashcard = ({
-  shouldPrint,
   colId,
   cardId,
   isSub = false,
@@ -48,30 +47,25 @@ const PrintFlashcard = ({
     setDataError(<>{layerError}</>);
   }, [layerError]);
 
-  const [container, setContainer] = useState<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (
-      !isMultiPrint &&
-      shouldPrint &&
-      previewData &&
-      layers &&
-      container !== null
-    ) {
-      window.print();
-    }
-  }, [isMultiPrint, shouldPrint, previewData, layers, container]);
-
   return (
     (previewData && layers && (
       <div>
         <div className="text-nord11">
           {error} {dataError}
         </div>
-        <div
-          className="flex justify-start"
-          ref={(element) => setContainer(element)}
-        >
+        {!isMultiPrint && (
+          <Button
+            type="button"
+            color="primary"
+            size="small"
+            className="mx-auto noPrint"
+            buttonType="button"
+            onClick={() => window.print()}
+          >
+            Print
+          </Button>
+        )}
+        <div className="flex justify-start">
           <div
             style={{
               width: "152mm",

@@ -15,13 +15,16 @@ const PrintCollectionPage = () => {
 
   const router = useRouter();
   const [collectionId, setCollectionId] = useState("");
+  const [subCollectionId, setSubCollectionId] = useState("");
   useEffect(() => {
     if (router.query.collectionId)
       setCollectionId(router.query.collectionId as string);
+    if (router.query.subCollectionId)
+      setSubCollectionId(router.query.subCollectionId as string);
   }, [router.query]);
 
   const { data, error } = useSWR<getAllFlashcardsResponse | false, FetchError>(
-    `/collections/${collectionId}/flashcards`,
+    `/collections/${collectionId}/subcollections/${subCollectionId}`,
     bodyApiFetch,
     {
       focusThrottleInterval: 1000 * 60 * 15, // limit to one every 15 minutes
