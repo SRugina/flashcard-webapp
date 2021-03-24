@@ -55,6 +55,7 @@ const PrintCollectionFlashcardIdPage = () => {
     content: () => container,
     documentTitle: title,
     copyStyles: true,
+    pageStyle: "",
   });
 
   useEffect(() => {
