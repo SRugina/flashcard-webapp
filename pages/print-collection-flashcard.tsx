@@ -1,7 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useReactToPrint } from "react-to-print";
 import Flashcard from "../components/Flashcard";
 import { useSelf } from "../utils/auth";
 import { useFlashcard, useFlashcardPreview } from "../utils/flashcards";
@@ -51,24 +50,12 @@ const PrintCollectionFlashcardIdPage = () => {
   }, [layerError]);
 
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
-  const handlePrint = useReactToPrint({
-    content: () => container,
-    documentTitle: title,
-    copyStyles: true,
-    pageStyle: "",
-  });
 
   useEffect(() => {
-    if (
-      shouldPrint &&
-      previewData &&
-      layers &&
-      handlePrint &&
-      container !== null
-    ) {
-      handlePrint();
+    if (shouldPrint && previewData && layers && container !== null) {
+      window.print();
     }
-  }, [shouldPrint, previewData, layers, handlePrint, container]);
+  }, [shouldPrint, previewData, layers, container]);
 
   return (
     (self && previewData && layers && (

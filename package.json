@@ -60,7 +60,6 @@
     "react-dom": "^17.0.1",
     "react-draggable": "^4.4.3",
     "react-resizable": "^1.11.0",
-    "react-to-print": "^2.12.3",
     "react-toastify": "^7.0.3",
     "slate": "^0.59.0",
     "slate-history": "^0.59.0",

@@ -16,6 +16,12 @@ const IndexPage = () => {
         <Link href="https://github.com/SRugina/flashcard-webapp">
           <a className="text-nord9">GitHub</a>
         </Link>
+        <br />
+        <br />
+        <h1 className="text-2xl font-bold">
+          WARNING: Printing to PDF only works properly in Chromium-based
+          browsers, e.g. Google Chrome
+        </h1>
       </div>
     </div>
   );

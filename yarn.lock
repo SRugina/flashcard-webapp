@@ -3634,13 +3634,6 @@ react-resizable@^1.11.0:
     prop-types "15.x"
     react-draggable "^4.0.3"
 
-react-to-print@^2.12.3:
-  version "2.12.3"
-  resolved "https://registry.yarnpkg.com/react-to-print/-/react-to-print-2.12.3.tgz#1468f2c7ee92c097a80da29150352cd72c8906f2"
-  integrity sha512-JpjPh2WDo2nraxgyt5p3kHMMZZDs52uDcgJJi7BbgmE/j3v1RcTtr3s3uvDk82WRjLWggDm1Ro2J9/L9qkH4cQ==
-  dependencies:
-    prop-types "^15.7.2"
-
 react-toastify@^7.0.3:
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/react-toastify/-/react-toastify-7.0.3.tgz#93804c777ecf918872ba3b5be9c654db14547f85"
