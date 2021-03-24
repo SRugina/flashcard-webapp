@@ -50,7 +50,7 @@ const PrintFlashcard = ({
   return (
     (previewData && layers && (
       <div>
-        <div className="text-nord11">
+        <div className="text-nord11 noPrint">
           {error} {dataError}
         </div>
         {!isMultiPrint && (

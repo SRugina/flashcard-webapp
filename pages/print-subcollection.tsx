@@ -34,15 +34,20 @@ const PrintCollectionPage = () => {
 
   const [colError, setColError] = useState(<></>);
   useEffect(() => {
-    const errInfo = error ? (error.info as ApiError) : undefined;
-    const err = errInfo ? errInfo.error : undefined;
-    if (err) {
-      setColError(<>{err}</>);
+    if (!data) {
+      const errInfo = error ? (error.info as ApiError) : undefined;
+      const err = errInfo ? errInfo.error : undefined;
+      if (err) {
+        setColError(<>{err}</>);
+      } else {
+        // might occur if an unknown type of response occurs e.g. server down
+        if (errInfo !== undefined)
+          setColError(<>Oops, something went wrong.</>);
+      }
     } else {
-      // might occur if an unknown type of response occurs e.g. server down
-      if (errInfo !== undefined) setColError(<>Oops, something went wrong.</>);
+      setColError(<></>);
     }
-  }, [error]);
+  }, [error, data]);
 
   return (
     (self && data && (
@@ -51,7 +56,7 @@ const PrintCollectionPage = () => {
           <title>Flashcard Web App</title>
           <meta name="Description" content="A Flashcard Web App" />
         </Head>
-        <div className="text-nord11">{colError}</div>
+        <div className="text-nord11 noPrint">{colError}</div>
         <Button
           type="button"
           color="primary"
