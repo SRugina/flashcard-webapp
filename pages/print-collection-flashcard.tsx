@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Flashcard from "../components/Flashcard";
+// import Flashcard from "../components/Flashcard";
 import { useSelf } from "../utils/auth";
 import { useFlashcard, useFlashcardPreview } from "../utils/flashcards";
 
@@ -39,7 +39,10 @@ const PrintCollectionFlashcardIdPage = () => {
     }
   }, [previewData]);
 
-  const { layers } = useFlashcard(collectionId, flashcardId);
+  const { layers, layerError } = useFlashcard(collectionId, flashcardId);
+
+  console.warn("title, and err:", title, titleError);
+  console.warn("layers, and err:", layers, layerError);
 
   return (
     (self && previewData && layers && (
@@ -56,7 +59,7 @@ const PrintCollectionFlashcardIdPage = () => {
           >
             <h1>{title}</h1>
           </div>
-          <Flashcard layers={layers} printMode={true} />
+          {/* <Flashcard layers={layers} printMode={true} /> */}
         </div>
       </div>
     )) ||
