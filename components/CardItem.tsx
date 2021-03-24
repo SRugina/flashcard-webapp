@@ -30,6 +30,8 @@ const CardItem = ({
   updateItem,
   printMode,
 }: CardItemProps) => {
+  console.warn("Item data", contents, updateItem, printMode);
+
   const [deltaPosition, setDeltaPosition] = useState({ x: left, y: top });
   const [size, setSize] = useState({ width, height });
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -87,7 +89,10 @@ const CardItem = ({
           }}
         >
           <div
-            onFocus={() => (printMode ? null : setActiveItem(id))}
+            onFocus={() => {
+              if (printMode) return;
+              setActiveItem(id);
+            }}
             className={`absolute inline-block rounded hover-handles overflow-hidden ${
               type === "text"
                 ? "overflow-y-auto focus-within:outline-none focus-within:ring-2 focus-within:ring-nord9"

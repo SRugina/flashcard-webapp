@@ -18,6 +18,8 @@ export function useCanvas(
   updateDrawLayer?: (layerId: number, data: string) => Promise<void>,
   printMode = false
 ) {
+  console.warn("Canvas data", updateDrawLayer, printMode);
+
   const { penColourRef, penRadiusRef, penEraseRef } = useGlobal();
   const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
   const [canvasCtx, setCanvasCtx] = useState<CanvasRenderingContext2D | null>(

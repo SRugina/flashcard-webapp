@@ -17,6 +17,14 @@ const Flashcard = ({
   updateDrawLayer,
   printMode = false,
 }: Props) => {
+  console.warn(
+    "Flashcard data",
+    layers,
+    updateItem,
+    updateDrawLayer,
+    printMode
+  );
+
   return (
     <div
       className="relative bg-white rounded-lg"

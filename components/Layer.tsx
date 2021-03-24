@@ -24,6 +24,15 @@ const Layer = ({
   updateDrawLayer,
   printMode,
 }: LayerProps) => {
+  console.warn(
+    "Layer data",
+    contents,
+    drawContents,
+    updateItem,
+    updateDrawLayer,
+    printMode
+  );
+
   const { activeLayer, isDrawingMode } = useGlobal();
   const [parent, setParent] = useState<HTMLDivElement | null>(null);
   const { setCanvas, error } = useCanvas(drawContents, id, updateDrawLayer);
