@@ -31,6 +31,8 @@ const SubCollectionIdPage = () => {
     refresh,
   } = useCurrentCollection(collectionId, true, subCollectionId);
 
+  const [genericError, setGenericError] = useState(<>{colError}</>);
+
   useEffect(() => {
     void refresh();
     setGenericError(<></>);
@@ -38,10 +40,14 @@ const SubCollectionIdPage = () => {
   }, []);
 
   useEffect(() => {
+    console.warn("Col Error: ", colError);
     setGenericError(<>{colError}</>);
   }, [colError]);
 
-  const [genericError, setGenericError] = useState(<>{colError}</>);
+  useEffect(() => {
+    console.warn("Generic Error: ", genericError);
+  }, [genericError]);
+
   const [title, setTitle] = useState("");
   const [formTitle, setFormTitle] = useState("");
 
