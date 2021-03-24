@@ -40,13 +40,12 @@ const SubCollectionIdPage = () => {
   }, []);
 
   useEffect(() => {
-    console.warn("Col Error: ", colError);
-    setGenericError(<>{colError}</>);
-  }, [colError]);
-
-  useEffect(() => {
-    console.warn("Generic Error: ", genericError);
-  }, [genericError]);
+    if (!collection) {
+      setGenericError(<>{colError}</>);
+    } else {
+      setGenericError(<></>);
+    }
+  }, [colError, collection]);
 
   const [title, setTitle] = useState("");
   const [formTitle, setFormTitle] = useState("");

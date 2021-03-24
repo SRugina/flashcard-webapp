@@ -36,8 +36,12 @@ const CollectionIdPage = () => {
   }, []);
 
   useEffect(() => {
-    setGenericError(<>{colError}</>);
-  }, [colError]);
+    if (!collection) {
+      setGenericError(<>{colError}</>);
+    } else {
+      setGenericError(<></>);
+    }
+  }, [colError, collection]);
 
   const [genericError, setGenericError] = useState(<>{colError}</>);
   const [title, setTitle] = useState("");
