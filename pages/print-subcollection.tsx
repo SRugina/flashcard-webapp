@@ -69,6 +69,8 @@ const PrintCollectionPage = () => {
                 key={flashcardPreview.id}
                 colId={collectionId}
                 cardId={flashcardPreview.id}
+                isSub={true}
+                subId={subCollectionId}
                 isMultiPrint={true}
               />
             );

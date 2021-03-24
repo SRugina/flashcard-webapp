@@ -109,8 +109,8 @@ const CollectionIdPage = () => {
               <Button
                 type="link"
                 color="primary"
-                size="small"
-                className="mt-1"
+                size="medium"
+                className="ml-4"
                 href={`/print-collection?collectionId=${collectionId}`}
               >
                 Export

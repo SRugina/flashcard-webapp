@@ -111,8 +111,8 @@ const SubCollectionIdPage = () => {
               <Button
                 type="link"
                 color="primary"
-                size="small"
-                className="mt-1"
+                size="medium"
+                className="ml-4"
                 href={`/print-subcollection?collectionId=${collectionId}&subCollectionId=${subCollectionId}`}
               >
                 Export
