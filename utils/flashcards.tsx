@@ -127,7 +127,8 @@ export function useFlashcard(
       : `/collections/${colId}/flashcards/${cardId}/layers`,
     decompressBodyApiFetch,
     {
-      focusThrottleInterval: 1000 * 60 * 15, // limit to one every 15 minutes
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
       errorRetryInterval: 1000 * 60 * 15, // limit to one every 15 minutes
     }
   );

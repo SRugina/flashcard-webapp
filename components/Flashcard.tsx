@@ -26,10 +26,26 @@ const Flashcard = ({
         id="flashcard-background"
         className={
           printMode
-            ? "flashcardBackground"
+            ? ""
             : "absolute top-0 left-0 w-full h-full flex flex-col justify-between rounded-lg overflow-hidden"
         }
-        style={{ zIndex: 0 }}
+        style={
+          printMode
+            ? {
+                zIndex: 0,
+                borderRadius: "0.5rem",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                height: "100%",
+                overflow: "hidden",
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+              }
+            : { zIndex: 0 }
+        }
       >
         {
           /* Create 17 lines, equally spaced, for the background of the flashcard */
@@ -38,10 +54,16 @@ const Flashcard = ({
             .map((_, index) => (
               <div
                 key={index}
-                className={
-                  printMode ? "flashcardBackgroundLine" : "w-full bg-black"
+                className={printMode ? "" : "w-full bg-black"}
+                style={
+                  printMode
+                    ? {
+                        height: "0.3mm",
+                        backgroundColor: "rgba(0,0,0,1)",
+                        width: "100%",
+                      }
+                    : { height: "0.3mm" }
                 }
-                style={{ height: "0.3mm" }}
               ></div>
             ))
         }
