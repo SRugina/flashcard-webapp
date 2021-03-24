@@ -85,6 +85,15 @@ const Editor = ({ colId, cardId, isSub = false, subId }: Props) => {
           >
             Preview Output
           </Button>
+          <Button
+            type="link"
+            color="primary"
+            size="small"
+            className="mt-1"
+            href={`/print-collection-flashcard?collectionId=${colId}&flashcardId=${cardId}`}
+          >
+            Preview Output
+          </Button>
         </div>
         <div className="ml-4 flex flex-col" style={{ maxWidth: "15ch" }}>
           <Button

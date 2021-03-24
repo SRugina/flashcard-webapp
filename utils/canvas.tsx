@@ -15,7 +15,8 @@ const pointerEvents: Array<
 export function useCanvas(
   drawContents: string,
   layerId: number,
-  updateDrawLayer: (layerId: number, data: string) => Promise<void>
+  updateDrawLayer?: (layerId: number, data: string) => Promise<void>,
+  printMode = false
 ) {
   const { penColourRef, penRadiusRef, penEraseRef } = useGlobal();
   const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
@@ -38,7 +39,7 @@ export function useCanvas(
 
   // update internal layer data
   useEffect(() => {
-    void updateDrawLayer(layerId, drawContent);
+    if (!printMode) void updateDrawLayer!(layerId, drawContent);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [drawContent]);
 
@@ -164,7 +165,7 @@ export function useCanvas(
 
   useEffect(() => {
     if (canvas !== null) {
-      if (window.PointerEvent) {
+      if (window.PointerEvent && !printMode) {
         for (let idx = 0; idx < pointerEvents.length; idx++) {
           canvas.addEventListener(pointerEvents[idx], pointerEventDraw, false);
         }
@@ -183,7 +184,7 @@ export function useCanvas(
 
     return () => {
       if (canvas !== null) {
-        if (window.PointerEvent) {
+        if (window.PointerEvent && !printMode) {
           for (let idx = 0; idx < pointerEvents.length; idx++) {
             canvas.removeEventListener(
               pointerEvents[idx],

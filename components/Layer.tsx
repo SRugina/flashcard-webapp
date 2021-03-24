@@ -6,12 +6,13 @@ import CardItem from "./CardItem";
 
 export interface LayerProps extends LayerData {
   zIndex: number;
-  updateItem: (
+  updateItem?: (
     itemId: number,
     layerId: number,
     data: updateItemData
   ) => Promise<void>;
-  updateDrawLayer: (layerId: number, data: string) => Promise<void>;
+  updateDrawLayer?: (layerId: number, data: string) => Promise<void>;
+  printMode: boolean;
 }
 
 const Layer = ({
@@ -21,6 +22,7 @@ const Layer = ({
   drawContents,
   updateItem,
   updateDrawLayer,
+  printMode,
 }: LayerProps) => {
   const { activeLayer, isDrawingMode } = useGlobal();
   const [parent, setParent] = useState<HTMLDivElement | null>(null);
@@ -33,7 +35,9 @@ const Layer = ({
       <div
         ref={(parent) => setParent(parent)}
         className="absolute top-0 left-0 w-full h-full"
-        style={{ zIndex: activeLayer === id ? 1000 : zIndex }}
+        style={{
+          zIndex: printMode ? zIndex : activeLayer === id ? 1000 : zIndex,
+        }}
       >
         {contents.map((element) => {
           return (
@@ -42,6 +46,7 @@ const Layer = ({
               parent={parent}
               parentId={id}
               updateItem={updateItem}
+              printMode={printMode}
               {...element}
             ></CardItem>
           );
@@ -53,7 +58,13 @@ const Layer = ({
         className="absolute block top-0 left-0 w-full h-full"
         style={{
           touchAction: "none",
-          zIndex: activeLayer === id ? (isDrawingMode ? 1001 : 999) : zIndex,
+          zIndex: printMode
+            ? zIndex
+            : activeLayer === id
+            ? isDrawingMode
+              ? 1001
+              : 999
+            : zIndex,
         }}
       >
         Your browser does not support the canvas element.

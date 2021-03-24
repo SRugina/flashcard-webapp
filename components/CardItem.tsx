@@ -9,11 +9,12 @@ import CardText from "./CardText";
 export interface CardItemProps extends CardItemData {
   parent: HTMLElement | null;
   parentId: number;
-  updateItem: (
+  updateItem?: (
     itemId: number,
     layerId: number,
     data: updateItemData
   ) => Promise<void>;
+  printMode: boolean;
 }
 
 const CardItem = ({
@@ -27,6 +28,7 @@ const CardItem = ({
   type,
   contents,
   updateItem,
+  printMode,
 }: CardItemProps) => {
   const [deltaPosition, setDeltaPosition] = useState({ x: left, y: top });
   const [size, setSize] = useState({ width, height });
@@ -50,14 +52,15 @@ const CardItem = ({
   };
 
   useEffect(() => {
-    void updateItem(id, parentId, {
-      left: deltaPosition.x,
-      top: deltaPosition.y,
-      width: size.width,
-      height: size.height,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      contents: content,
-    });
+    if (!printMode)
+      void updateItem!(id, parentId, {
+        left: deltaPosition.x,
+        top: deltaPosition.y,
+        width: size.width,
+        height: size.height,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        contents: content,
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deltaPosition, size, content]);
 
@@ -69,6 +72,7 @@ const CardItem = ({
         cancel={".react-resizable-handle"}
         nodeRef={nodeRef}
         defaultPosition={deltaPosition}
+        disabled={printMode}
       >
         <Resizable
           width={size.width}
@@ -78,9 +82,12 @@ const CardItem = ({
             parent.clientWidth - deltaPosition.x,
             parent.clientHeight - deltaPosition.y,
           ]}
+          draggableOpts={{
+            disabled: printMode,
+          }}
         >
           <div
-            onFocus={() => setActiveItem(id)}
+            onFocus={() => (printMode ? null : setActiveItem(id))}
             className={`absolute inline-block rounded hover-handles overflow-hidden ${
               type === "text"
                 ? "overflow-y-auto focus-within:outline-none focus-within:ring-2 focus-within:ring-nord9"
@@ -91,11 +98,19 @@ const CardItem = ({
             ref={nodeRef}
           >
             {type === "text" ? (
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-              <CardText content={content} setContent={setContent} />
+              <CardText
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                content={content}
+                setContent={setContent}
+                printMode={printMode}
+              />
             ) : type === "image" ? (
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-              <CardImage content={content} setContent={setContent} />
+              <CardImage
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                content={content}
+                setContent={setContent}
+                printMode={printMode}
+              />
             ) : (
               <></>
             )}

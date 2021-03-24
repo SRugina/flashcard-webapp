@@ -5,14 +5,17 @@ import blobToBase64 from "../utils/blobToBase64";
 const CardImage = ({
   content,
   setContent,
+  printMode,
 }: {
   content: string;
   setContent: Dispatch<string>;
+  printMode: boolean;
 }) => {
   const { createToast } = useGlobal();
   return (
     <div
       onPaste={async (e) => {
+        if (printMode) return;
         // Filter the image items only
         const items: Array<DataTransferItem> = [].slice
           .call(e.clipboardData.items)

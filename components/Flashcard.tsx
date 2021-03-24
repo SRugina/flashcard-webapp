@@ -2,15 +2,21 @@ import { FlashcardData, updateItemData } from "../interfaces";
 import Layer from "./Layer";
 
 interface Props extends FlashcardData {
-  updateItem: (
+  updateItem?: (
     itemId: number,
     layerId: number,
     data: updateItemData
   ) => Promise<void>;
-  updateDrawLayer: (layerId: number, data: string) => Promise<void>;
+  updateDrawLayer?: (layerId: number, data: string) => Promise<void>;
+  printMode?: boolean;
 }
 
-const Flashcard = ({ layers, updateItem, updateDrawLayer }: Props) => {
+const Flashcard = ({
+  layers,
+  updateItem,
+  updateDrawLayer,
+  printMode = false,
+}: Props) => {
   return (
     <div
       className="relative bg-white rounded-lg"
@@ -41,6 +47,7 @@ const Flashcard = ({ layers, updateItem, updateDrawLayer }: Props) => {
             zIndex={index}
             updateItem={updateItem}
             updateDrawLayer={updateDrawLayer}
+            printMode={printMode}
             {...layer}
           />
         );

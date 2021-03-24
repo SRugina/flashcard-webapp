@@ -30,9 +30,11 @@ import { languages, Token, tokenize } from "prismjs";
 const CardText = ({
   content,
   setContent,
+  printMode,
 }: {
   content: Array<Node>;
   setContent: Dispatch<Array<Node>>;
+  printMode: boolean;
 }) => {
   const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
@@ -88,6 +90,7 @@ const CardText = ({
         renderLeaf={renderLeaf}
         placeholder="Write some markdown..."
         className="focus:outline-none focus:ring-0"
+        readOnly={printMode}
       />
     </Slate>
   );
