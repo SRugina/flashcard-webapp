@@ -22,6 +22,15 @@ const IndexPage = () => {
           WARNING: Printing to PDF only works properly in Chromium-based
           browsers, e.g. Google Chrome
         </h1>
+        <br />
+        Known Issues:
+        <ul className="list-disc">
+          <li>
+            Changes can take up to 60 seconds to update everywhere, e.g. adding
+            a new card then trying to print the collection immediately
+            won&apos;t show the flashcard.
+          </li>
+        </ul>
       </div>
     </div>
   );

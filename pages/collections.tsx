@@ -14,6 +14,7 @@ const CollectionsPage = () => {
 
   useEffect(() => {
     void refresh();
+    setGenericError(<></>);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
