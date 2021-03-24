@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useReactToPrint } from "react-to-print";
 import Flashcard from "../components/Flashcard";
 import { useSelf } from "../utils/auth";
 import { useFlashcard, useFlashcardPreview } from "../utils/flashcards";
@@ -14,6 +15,7 @@ const PrintCollectionFlashcardIdPage = () => {
   const [collectionId, setCollectionId] = useState("");
   const [subCollectionId, setSubCollectionId] = useState("");
   const [flashcardId, setFlashcardId] = useState("");
+  const [shouldPrint, setShouldPrint] = useState(false);
   useEffect(() => {
     if (router.query.collectionId)
       setCollectionId(router.query.collectionId as string);
@@ -21,6 +23,7 @@ const PrintCollectionFlashcardIdPage = () => {
       setSubCollectionId(router.query.subCollectionId as string);
     if (router.query.flashcardId)
       setFlashcardId(router.query.flashcardId as string);
+    if (router.query.shouldPrint) setShouldPrint(true);
   }, [router.query]);
 
   const { previewData, titleError } = useFlashcardPreview(
@@ -57,6 +60,24 @@ const PrintCollectionFlashcardIdPage = () => {
     setDataError(<>{layerError}</>);
   }, [layerError]);
 
+  const [container, setContainer] = useState<HTMLDivElement | null>(null);
+  const handlePrint = useReactToPrint({
+    content: () => container,
+    documentTitle: title,
+  });
+
+  useEffect(() => {
+    if (
+      shouldPrint &&
+      previewData &&
+      layers &&
+      handlePrint &&
+      container !== null
+    ) {
+      handlePrint();
+    }
+  }, [shouldPrint, previewData, layers, handlePrint, container]);
+
   return (
     (self && previewData && layers && (
       <div>
@@ -64,10 +85,13 @@ const PrintCollectionFlashcardIdPage = () => {
           <title>Flashcard Web App</title>
           <meta name="Description" content="A Flashcard Web App" />
         </Head>
-        <div className="text-nord11 text-center">
+        <div className="text-nord11">
           {error} {dataError}
         </div>
-        <div className="flex mx-auto justify-evenly">
+        <div
+          className="flex justify-start"
+          ref={(element) => setContainer(element)}
+        >
           <div
             className="relative overflow-hidden line-clamp-4 rounded-lg bg-gray-300 text-2xl font-bold text-gray-400"
             style={{ width: "152mm", height: "102mm" }}

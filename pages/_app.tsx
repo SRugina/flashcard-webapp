@@ -13,8 +13,11 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   useEffect(() => console.warn(router.pathname), [router.pathname]);
 
-  return router.pathname !== "/print-collection-flashcard" ||
-    router.pathname !== "/print-collection-flashcard" ? (
+  const onPrintPage =
+    router.pathname === "/print-collection-flashcard" ||
+    router.pathname === "/print-subcollection-flashcard";
+
+  return !onPrintPage ? (
     <Layout>
       <GlobalProvider>
         <Component {...pageProps} />

@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useReactToPrint } from "react-to-print";
 import Flashcard from "../components/Flashcard";
 import { useSelf } from "../utils/auth";
 import { useFlashcard, useFlashcardPreview } from "../utils/flashcards";
@@ -49,11 +50,23 @@ const PrintCollectionFlashcardIdPage = () => {
     setDataError(<>{layerError}</>);
   }, [layerError]);
 
+  const [container, setContainer] = useState<HTMLDivElement | null>(null);
+  const handlePrint = useReactToPrint({
+    content: () => container,
+    documentTitle: title,
+  });
+
   useEffect(() => {
-    if (shouldPrint && previewData && layers) {
-      window.print();
+    if (
+      shouldPrint &&
+      previewData &&
+      layers &&
+      handlePrint &&
+      container !== null
+    ) {
+      handlePrint();
     }
-  }, [shouldPrint, previewData, layers]);
+  }, [shouldPrint, previewData, layers, handlePrint, container]);
 
   return (
     (self && previewData && layers && (
@@ -65,7 +78,10 @@ const PrintCollectionFlashcardIdPage = () => {
         <div className="text-nord11">
           {error} {dataError}
         </div>
-        <div className="flex justify-start">
+        <div
+          className="flex justify-start"
+          ref={(element) => setContainer(element)}
+        >
           <div
             className="relative overflow-hidden line-clamp-4 rounded-lg bg-gray-300 text-2xl font-bold text-gray-400"
             style={{ width: "152mm", height: "102mm" }}
