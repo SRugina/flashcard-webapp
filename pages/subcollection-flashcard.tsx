@@ -26,12 +26,12 @@ const SubCollectionFlashcardIdPage = () => {
       setFlashcardId(router.query.flashcardId as string);
   }, [router.query]);
 
-  const { previewData, titleError, updateTitle } = useFlashcardPreview(
-    collectionId,
-    flashcardId,
-    true,
-    subCollectionId
-  );
+  const {
+    previewData,
+    titleError,
+    updateTitle,
+    deleteFlashcard,
+  } = useFlashcardPreview(collectionId, flashcardId, true, subCollectionId);
 
   const [error, setError] = useState(<>{titleError}</>);
 
@@ -56,6 +56,15 @@ const SubCollectionFlashcardIdPage = () => {
       };
       await updateTitle(updateTitleData);
       return;
+    } catch (err) {
+      setError(<>{err}</>);
+    }
+  };
+
+  const deleteCard = async () => {
+    try {
+      await deleteFlashcard();
+      await router.push("/");
     } catch (err) {
       setError(<>{err}</>);
     }
@@ -98,6 +107,16 @@ const SubCollectionFlashcardIdPage = () => {
                 className="ml-4 whitespace-nowrap"
               >
                 Change title
+              </Button>
+              <Button
+                type="button"
+                buttonType="button"
+                color="danger"
+                size="medium"
+                className="ml-4"
+                onClick={async () => await deleteCard()}
+              >
+                Delete
               </Button>
             </div>
           </form>

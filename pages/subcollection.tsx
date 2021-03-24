@@ -27,6 +27,7 @@ const SubCollectionIdPage = () => {
     colError,
     updateCollection,
     addFlashcard,
+    deleteCollection,
   } = useCurrentCollection(collectionId, true, subCollectionId);
 
   useEffect(() => {
@@ -56,6 +57,15 @@ const SubCollectionIdPage = () => {
     }
   };
 
+  const deleteCol = async () => {
+    try {
+      await deleteCollection();
+      await router.push("/");
+    } catch (err) {
+      setGenericError(<>{err}</>);
+    }
+  };
+
   return (
     (self && collection && (
       <div>
@@ -65,12 +75,24 @@ const SubCollectionIdPage = () => {
         </Head>
         <div className="my-4 flex mx-auto justify-evenly">
           <section className="container max-w-xs sm:max-w-xl lg:max-w-2xl bg-gray-100 shadow-md mx-auto sm:m-0 p-6 rounded-lg">
-            <h1
-              className="text-2xl font-bold overflow-x-auto whitespace-nowrap"
-              style={{ maxWidth: "60ch" }}
-            >
-              {title}
-            </h1>
+            <div className="flex flex-wrap items-center justify-start">
+              <h1
+                className="text-2xl font-bold overflow-x-auto whitespace-nowrap"
+                style={{ maxWidth: "60ch" }}
+              >
+                {title}
+              </h1>
+              <Button
+                type="button"
+                buttonType="button"
+                color="danger"
+                size="medium"
+                className="ml-4"
+                onClick={async () => await deleteCol()}
+              >
+                Delete
+              </Button>
+            </div>
             <div className="text-nord11 text-center">{genericError}</div>
             <form className="mb-1 mt-2" onSubmit={changeCollection}>
               <div className="flex flex-wrap items-center justify-start">

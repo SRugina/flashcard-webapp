@@ -265,6 +265,38 @@ export function useCurrentCollection(
     return;
   };
 
+  const deleteCollection = async () => {
+    if (data) {
+      // if data is not false, we can assume the below request will also not be false
+      try {
+        await bodyApiFetch<CollectionPreview | SubCollectionPreview>(
+          isSub
+            ? `/collections/${id}/subcollections/${subId!}`
+            : `/collections/${id}`,
+          "DELETE"
+        );
+        await mutate(
+          {
+            id: "DELETED",
+            title: "DELETED",
+            flashcardData: [],
+          },
+          false
+        );
+      } catch (rawErrors) {
+        const errInfo = (rawErrors as FetchError).info as ApiError;
+        const err = errInfo ? errInfo.error : undefined;
+        if (err) {
+          throw err;
+        } else {
+          // might occur if an unknown type of response occurs e.g. server down
+          if (errInfo !== undefined) throw "Oops, something went wrong.";
+        }
+      }
+    }
+    return;
+  };
+
   return {
     collection: data,
     colError,
@@ -272,5 +304,6 @@ export function useCurrentCollection(
     updateCollection,
     addSubCollection,
     addFlashcard,
+    deleteCollection,
   };
 }

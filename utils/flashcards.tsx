@@ -98,12 +98,44 @@ export function useFlashcardPreview(
     return;
   };
 
+  const deleteFlashcard = async () => {
+    if (previewData) {
+      // if data is not false, we can assume the below request will also not be false
+      try {
+        await bodyApiFetch<FlashcardPreview>(
+          isSub
+            ? `/collections/${colId}/subcollections/${subId!}/flashcards/${cardId}`
+            : `/collections/${colId}/flashcards/${cardId}`,
+          "DELETE"
+        );
+        await mutatePreview(
+          {
+            id: "DELETED",
+            title: "DELETED",
+          },
+          false
+        );
+      } catch (rawErrors) {
+        const errInfo = (rawErrors as FetchError).info as ApiError;
+        const err = errInfo ? errInfo.error : undefined;
+        if (err) {
+          throw err;
+        } else {
+          // might occur if an unknown type of response occurs e.g. server down
+          if (errInfo !== undefined) throw "Oops, something went wrong.";
+        }
+      }
+    }
+    return;
+  };
+
   const values = useMemo(
     () => ({
       previewData,
       titleError,
       loading: previewData === undefined,
       updateTitle,
+      deleteFlashcard,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [previewData, titleError]
