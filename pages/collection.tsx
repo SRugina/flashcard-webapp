@@ -26,7 +26,13 @@ const CollectionIdPage = () => {
     addSubCollection,
     addFlashcard,
     deleteCollection,
+    refresh,
   } = useCurrentCollection(collectionId);
+
+  useEffect(() => {
+    void refresh();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     setGenericError(<>{colError}</>);
@@ -89,6 +95,16 @@ const CollectionIdPage = () => {
                 onClick={async () => await deleteCol()}
               >
                 Delete
+              </Button>
+              <Button
+                type="button"
+                buttonType="button"
+                color="primary"
+                size="medium"
+                className="ml-4"
+                onClick={async () => await refresh()}
+              >
+                Refresh
               </Button>
             </div>
             <div className="text-nord11 text-center">{genericError}</div>

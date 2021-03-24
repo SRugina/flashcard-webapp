@@ -32,6 +32,10 @@ export function useCollections() {
     }
   }, [error]);
 
+  const refresh = async () => {
+    await mutate();
+  };
+
   const createCollection = async (newCol: CollectionMetadata) => {
     if (data) {
       // if data is not false, we can assume the below request will also not be false
@@ -77,6 +81,7 @@ export function useCollections() {
     colError,
     loading: data === undefined,
     createCollection,
+    refresh,
   };
 }
 
@@ -98,6 +103,10 @@ export function useCurrentCollection(
       errorRetryInterval: 1000 * 60 * 15, // limit to one every 15 minutes
     }
   );
+
+  const refresh = async () => {
+    await mutate();
+  };
 
   const [colError, setColError] = useState("");
   useEffect(() => {
@@ -305,5 +314,6 @@ export function useCurrentCollection(
     addSubCollection,
     addFlashcard,
     deleteCollection,
+    refresh,
   };
 }

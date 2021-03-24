@@ -35,6 +35,11 @@ export function useFlashcardPreview(
       errorRetryInterval: 1000 * 60 * 15, // limit to one every 15 minutes
     }
   );
+
+  const refresh = async () => {
+    await mutatePreview();
+  };
+
   const [titleError, setTitleError] = useState("");
   useEffect(() => {
     const errInfo = previewError ? (previewError.info as ApiError) : undefined;
@@ -136,6 +141,7 @@ export function useFlashcardPreview(
       loading: previewData === undefined,
       updateTitle,
       deleteFlashcard,
+      refresh,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [previewData, titleError]
@@ -164,6 +170,11 @@ export function useFlashcard(
       errorRetryInterval: 1000 * 60 * 15, // limit to one every 15 minutes
     }
   );
+
+  const refresh = async () => {
+    await mutateLayers();
+  };
+
   const [layerError, setLayerError] = useState("");
   useEffect(() => {
     const errInfo = layerDataError
@@ -404,6 +415,7 @@ export function useFlashcard(
       addImageItem,
       updateDrawLayer,
       saveLayers,
+      refresh,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [layers, layerError, activeLayer, activeItem]

@@ -8,9 +8,14 @@ import { useCollections } from "../utils/collections";
 
 const CollectionsPage = () => {
   const { self, protectRoute } = useSelf();
-  const { collections, colError, createCollection } = useCollections();
+  const { collections, colError, createCollection, refresh } = useCollections();
 
   protectRoute();
+
+  useEffect(() => {
+    void refresh();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     setGenericError(<>{colError}</>);
@@ -41,7 +46,19 @@ const CollectionsPage = () => {
         </Head>
         <div className="my-4 flex mx-auto justify-evenly">
           <section className="container max-w-xs sm:max-w-xl lg:max-w-2xl bg-gray-100 shadow-md mx-auto sm:m-0 p-6 rounded-lg">
-            <h1 className="text-2xl text-center font-bold">Your Collections</h1>
+            <div className="flex flex-wrap items-center justify-start">
+              <h1 className="text-2xlfont-bold">Your Collections</h1>
+              <Button
+                type="button"
+                buttonType="button"
+                color="primary"
+                size="medium"
+                className="ml-4"
+                onClick={async () => await refresh()}
+              >
+                Refresh
+              </Button>
+            </div>
             <div className="text-nord11 text-center">{genericError}</div>
             <form className="mb-1 mt-2" onSubmit={newCollection}>
               <div className="flex items-center justify-between">
