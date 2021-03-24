@@ -22,7 +22,7 @@ router
   .all("*", withJson)
   .all("/users/*", UserController.handle)
   .all("/collections/*", CollectionController.handle)
-  .all("*", () => new Response("WompWomp", { status: 404 }));
+  .all("*", () => new Response("Route not found", { status: 404 }));
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
 export const handleRequest = async (request: Request) => {
