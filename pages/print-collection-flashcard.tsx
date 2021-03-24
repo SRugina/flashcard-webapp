@@ -54,10 +54,10 @@ const PrintCollectionFlashcardIdPage = () => {
           <title>Flashcard Web App</title>
           <meta name="Description" content="A Flashcard Web App" />
         </Head>
-        <div className="text-nord11 text-center">
+        <div className="text-nord11">
           {error} {dataError}
         </div>
-        <div className="flex mx-auto justify-evenly">
+        <div className="flex justify-start">
           <div
             className="relative overflow-hidden line-clamp-4 rounded-lg bg-gray-300 text-2xl font-bold text-gray-400"
             style={{ width: "152mm", height: "102mm" }}
