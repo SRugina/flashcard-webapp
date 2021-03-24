@@ -73,8 +73,8 @@ const CollectionFlashcardIdPage = () => {
     (self && previewData && (
       <div>
         <Head>
-          <title>Flashcard Web App</title>
-          <meta name="Description" content="A Flashcard Web App" />
+          <title>{title}</title>
+          <meta name="Description" content="A Flashcard" />
         </Head>
         <div className="flex mx-auto justify-evenly">
           <h1

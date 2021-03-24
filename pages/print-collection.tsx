@@ -50,8 +50,8 @@ const PrintCollectionPage = () => {
     (self && data && (
       <div>
         <Head>
-          <title>Flashcard Web App</title>
-          <meta name="Description" content="A Flashcard Web App" />
+          <title>Print Collection</title>
+          <meta name="Description" content="The print collection page" />
         </Head>
         <div className="text-nord11 noPrint">{colError}</div>
         <Button

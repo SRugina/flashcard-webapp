@@ -42,8 +42,8 @@ const CollectionsPage = () => {
     (self && collections && (
       <div>
         <Head>
-          <title>Flashcard Web App</title>
-          <meta name="Description" content="A Flashcard Web App" />
+          <title>Your Collections</title>
+          <meta name="Description" content="Your Collections" />
         </Head>
         <div className="my-4 flex mx-auto justify-evenly">
           <section className="container max-w-xs sm:max-w-xl lg:max-w-2xl bg-gray-100 shadow-md mx-auto sm:m-0 p-6 rounded-lg">

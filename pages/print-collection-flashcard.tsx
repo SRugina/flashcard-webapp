@@ -23,8 +23,8 @@ const PrintCollectionFlashcardIdPage = () => {
     (self && (
       <div>
         <Head>
-          <title>Flashcard Web App</title>
-          <meta name="Description" content="A Flashcard Web App" />
+          <title>Print Flashcard</title>
+          <meta name="Description" content="The print flashcard page" />
         </Head>
         <PrintFlashcard colId={collectionId} cardId={flashcardId} />
       </div>

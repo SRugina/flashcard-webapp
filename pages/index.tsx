@@ -6,11 +6,14 @@ const IndexPage = () => {
     <div>
       <Head>
         <title>Flashcard Web App</title>
-        <meta name="Description" content="A Flashcard Web App" />
+        <meta
+          name="Description"
+          content="A Flashcard Web App with drawing, collections, and exporting to PDF support."
+        />
       </Head>
       <div className="mx-auto w-full text-center">
         This is a flashcard webapp with drawing, collections, and exporting to
-        PDF support. (WIP)
+        PDF support.
         <br />
         Repository:{" "}
         <Link href="https://github.com/SRugina/flashcard-webapp">
@@ -29,6 +32,10 @@ const IndexPage = () => {
             Changes can take up to 60 seconds to update everywhere, e.g. adding
             a new card then trying to print the collection immediately
             won&apos;t show the flashcard.
+          </li>
+          <li>
+            There is no UI for going backward/forward through collections, and
+            no undo/redo when editing flashcards at this time.
           </li>
         </ul>
       </div>
