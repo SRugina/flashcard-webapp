@@ -11,6 +11,10 @@ export interface getCollectionResponse extends CollectionPreview {
   flashcardData: Array<FlashcardPreview>;
 }
 
+export interface getAllFlashcardsResponse extends CollectionPreview {
+  flashcardData: Array<FlashcardPreview>;
+}
+
 export interface SubCollectionMetadata {
   title: string;
 }

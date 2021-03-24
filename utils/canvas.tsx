@@ -165,12 +165,18 @@ export function useCanvas(
 
   useEffect(() => {
     if (canvas !== null) {
-      if (window.PointerEvent && !printMode) {
-        for (let idx = 0; idx < pointerEvents.length; idx++) {
-          canvas.addEventListener(pointerEvents[idx], pointerEventDraw, false);
+      if (!printMode) {
+        if (window.PointerEvent) {
+          for (let idx = 0; idx < pointerEvents.length; idx++) {
+            canvas.addEventListener(
+              pointerEvents[idx],
+              pointerEventDraw,
+              false
+            );
+          }
+        } else {
+          setError("Browser does not support Pointer Events.");
         }
-      } else {
-        setError("Browser does not support Pointer Events.");
       }
 
       // load internal layer data at start
@@ -184,13 +190,15 @@ export function useCanvas(
 
     return () => {
       if (canvas !== null) {
-        if (window.PointerEvent && !printMode) {
-          for (let idx = 0; idx < pointerEvents.length; idx++) {
-            canvas.removeEventListener(
-              pointerEvents[idx],
-              pointerEventDraw,
-              false
-            );
+        if (!printMode) {
+          if (window.PointerEvent) {
+            for (let idx = 0; idx < pointerEvents.length; idx++) {
+              canvas.removeEventListener(
+                pointerEvents[idx],
+                pointerEventDraw,
+                false
+              );
+            }
           }
         }
       }

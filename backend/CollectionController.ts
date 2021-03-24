@@ -10,6 +10,7 @@ import {
   FlashcardMetadata,
   FlashcardPreview,
   getCollectionResponse,
+  getAllFlashcardsResponse,
 } from "../interfaces";
 import { encodeHex, random128bit } from "./utils/crypto";
 import {
@@ -133,6 +134,46 @@ const getCollection = async (request: ApiRequest) => {
   return new Response(JSON.stringify(res));
 };
 
+const getAllCollectionFlashcards = async (request: ApiRequest) => {
+  const params = request.params as { colId: string };
+  const collectionTitle = (
+    await Collections.getWithMetadata<CollectionMetadata>(
+      formatCollectionKey(request, params.colId),
+      "stream"
+    )
+  ).metadata?.title;
+
+  if (!collectionTitle) {
+    return new Response(
+      JSON.stringify({ error: "Collection does not exist" }),
+      { status: 404 }
+    );
+  }
+
+  const flashcards = (
+    await Flashcards.list({
+      prefix: `${formatCollectionKey(request, params.colId)}:`,
+    })
+  ).keys; // no filter, so shows flashcards in sub-collections too
+
+  const flashcardData: Array<FlashcardPreview> = [];
+  for (const flashcard of flashcards) {
+    const metadata = flashcard.metadata as FlashcardMetadata;
+    flashcardData.push({
+      id: formatIdFromKey(flashcard.name),
+      ...metadata,
+    });
+  }
+
+  const res: getAllFlashcardsResponse = {
+    id: params.colId,
+    title: collectionTitle,
+    flashcardData,
+  };
+
+  return new Response(JSON.stringify(res));
+};
+
 const updateCollection = async (request: ApiRequest) => {
   const body = (await request.json()) as CollectionMetadata;
   if (!body.title) {
@@ -211,6 +252,7 @@ CollectionController.get("/", withUser, getAllCollections)
   .get("/:colId", withUser, getCollection)
   .patch("/:colId", withUser, updateCollection)
   .delete("/:colId", withUser, deleteCollection)
+  .get("/:colId/flashcards/", withUser, getAllCollectionFlashcards)
   .post("/:colId/flashcards/", withUser, createFlashcard)
   .get("/:colId/flashcards/:cardId/preview", withUser, getFlashcardPreview)
   .get("/:colId/flashcards/:cardId/layers", withUser, getFlashcardLayers)

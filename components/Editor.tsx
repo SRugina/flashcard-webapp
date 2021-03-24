@@ -90,9 +90,13 @@ const Editor = ({ colId, cardId, isSub = false, subId }: Props) => {
             color="primary"
             size="small"
             className="mt-1"
-            href={`/print-collection-flashcard?collectionId=${colId}&flashcardId=${cardId}`}
+            href={
+              isSub
+                ? `/print-subcollection-flashcard?collectionId=${colId}&subCollectionId=${subId!}&flashcardId=${cardId}`
+                : `/print-collection-flashcard?collectionId=${colId}&flashcardId=${cardId}`
+            }
           >
-            Preview Output
+            Export to PDF
           </Button>
         </div>
         <div className="ml-4 flex flex-col" style={{ maxWidth: "15ch" }}>
