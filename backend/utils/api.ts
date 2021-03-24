@@ -25,3 +25,8 @@ export const formatIdFromKey = (key: string) => {
   const keyParts = key.split(":");
   return keyParts[keyParts.length - 1];
 };
+
+export const formatIdWithSubFromKey = (key: string) => {
+  const keyParts = key.split(":");
+  return `${keyParts[keyParts.length - 3]}:${keyParts[keyParts.length - 1]}`;
+};

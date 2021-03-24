@@ -61,7 +61,16 @@ const PrintCollectionPage = () => {
         </Button>
         <div>
           {data.flashcardData.map((flashcardPreview) => {
-            return (
+            return flashcardPreview.id.includes(":") ? (
+              <PrintFlashcard
+                key={flashcardPreview.id}
+                colId={collectionId}
+                cardId={flashcardPreview.id.split(":")[1]}
+                isSub={true}
+                subId={flashcardPreview.id.split("")[0]}
+                isMultiPrint={true}
+              />
+            ) : (
               <PrintFlashcard
                 key={flashcardPreview.id}
                 colId={collectionId}

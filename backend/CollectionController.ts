@@ -1,6 +1,10 @@
 import { Router } from "itty-router";
 import { formatUserKey, withUser } from "./UserController";
-import { ApiRequest, formatIdFromKey } from "./utils/api";
+import {
+  ApiRequest,
+  formatIdFromKey,
+  formatIdWithSubFromKey,
+} from "./utils/api";
 import "./utils/namespaces";
 import {
   CollectionPreview,
@@ -160,7 +164,10 @@ const getAllCollectionFlashcards = async (request: ApiRequest) => {
   for (const flashcard of flashcards) {
     const metadata = flashcard.metadata as FlashcardMetadata;
     flashcardData.push({
-      id: formatIdFromKey(flashcard.name),
+      id:
+        flashcard.name.split(":").length === 6
+          ? formatIdFromKey(flashcard.name)
+          : formatIdWithSubFromKey(flashcard.name),
       ...metadata,
     });
   }
