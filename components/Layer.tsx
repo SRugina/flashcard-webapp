@@ -24,18 +24,14 @@ const Layer = ({
   updateDrawLayer,
   printMode,
 }: LayerProps) => {
-  console.warn(
-    "Layer data",
-    contents,
+  const { activeLayer, isDrawingMode } = useGlobal();
+  const [parent, setParent] = useState<HTMLDivElement | null>(null);
+  const { setCanvas, error } = useCanvas(
     drawContents,
-    updateItem,
+    id,
     updateDrawLayer,
     printMode
   );
-
-  const { activeLayer, isDrawingMode } = useGlobal();
-  const [parent, setParent] = useState<HTMLDivElement | null>(null);
-  const { setCanvas, error } = useCanvas(drawContents, id, updateDrawLayer);
 
   return error ? (
     <div>{error}</div>

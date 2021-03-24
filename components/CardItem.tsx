@@ -30,8 +30,6 @@ const CardItem = ({
   updateItem,
   printMode,
 }: CardItemProps) => {
-  console.warn("Item data", contents, updateItem, printMode);
-
   const [deltaPosition, setDeltaPosition] = useState({ x: left, y: top });
   const [size, setSize] = useState({ width, height });
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -54,7 +52,7 @@ const CardItem = ({
   };
 
   useEffect(() => {
-    if (!printMode)
+    if (!printMode) {
       void updateItem!(id, parentId, {
         left: deltaPosition.x,
         top: deltaPosition.y,
@@ -63,6 +61,7 @@ const CardItem = ({
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         contents: content,
       });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deltaPosition, size, content]);
 

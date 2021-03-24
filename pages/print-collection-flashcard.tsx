@@ -39,10 +39,13 @@ const PrintCollectionFlashcardIdPage = () => {
     }
   }, [previewData]);
 
+  const [dataError, setDataError] = useState(<>{titleError}</>);
+
   const { layers, layerError } = useFlashcard(collectionId, flashcardId);
 
-  console.warn("title, and err:", title, titleError);
-  console.warn("layers, and err:", layers, layerError);
+  useEffect(() => {
+    setDataError(<>{layerError}</>);
+  }, [layerError]);
 
   return (
     (self && previewData && layers && (
@@ -51,7 +54,9 @@ const PrintCollectionFlashcardIdPage = () => {
           <title>Flashcard Web App</title>
           <meta name="Description" content="A Flashcard Web App" />
         </Head>
-        <div className="ml-2 text-nord11 text-center">{error}</div>
+        <div className="ml-2 text-nord11 text-center">
+          {error} {dataError}
+        </div>
         <div className="flex mx-auto justify-evenly">
           <div
             className="mr-2 relative overflow-hidden line-clamp-4  rounded-lg bg-gray-300 text-2xl font-bold text-gray-400"
