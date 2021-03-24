@@ -54,6 +54,7 @@ const PrintCollectionFlashcardIdPage = () => {
   const handlePrint = useReactToPrint({
     content: () => container,
     documentTitle: title,
+    copyStyles: true,
   });
 
   useEffect(() => {

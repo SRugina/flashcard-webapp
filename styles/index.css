@@ -8,6 +8,11 @@
 
 /* Write your own custom component styles here */
 
+/* Print to A4 landscape by default */
+@media print {
+  @page { size: A4 landscape; }
+}
+
 /* apply a natural box layout model to all elements, but allowing components to change */
 html {
   box-sizing: border-box;
