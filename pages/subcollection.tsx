@@ -108,6 +108,15 @@ const SubCollectionIdPage = () => {
               >
                 Refresh
               </Button>
+              <Button
+                type="link"
+                color="primary"
+                size="small"
+                className="mt-1"
+                href={`/print-subcollection?collectionId=${collectionId}&subCollectionId=${subCollectionId}`}
+              >
+                Export
+              </Button>
             </div>
             <div className="text-nord11 text-center">{genericError}</div>
             <form className="mb-1 mt-2" onSubmit={changeCollection}>

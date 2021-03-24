@@ -6,12 +6,9 @@ import { GlobalProvider } from "../providers/GlobalProvider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
-
-  useEffect(() => console.warn(router.pathname), [router.pathname]);
 
   const onPrintPage =
     router.pathname === "/print-collection-flashcard" ||
