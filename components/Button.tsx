@@ -10,6 +10,7 @@ type Props = {
   onClick?: () => any;
   className?: string;
   children?: ReactNode;
+  disabled?: boolean;
 };
 
 const Button = ({
@@ -21,6 +22,7 @@ const Button = ({
   buttonType,
   size,
   children,
+  disabled = false,
 }: Props) => {
   let sizeClasses = "";
   switch (size) {
@@ -72,6 +74,7 @@ const Button = ({
       }`}
       type={buttonType}
       onClick={onClick}
+      disabled={disabled}
     >
       {children}
     </button>

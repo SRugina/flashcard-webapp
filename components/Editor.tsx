@@ -34,7 +34,9 @@ const Editor = ({ colId, cardId, isSub = false, subId }: Props) => {
     setPenRadius,
     penErase,
     setPenErase,
+    saving,
   } = useGlobal();
+
   return (
     (layers && (
       <div className="flex mx-auto justify-center">
@@ -180,8 +182,9 @@ const Editor = ({ colId, cardId, isSub = false, subId }: Props) => {
             className="mt-1"
             buttonType="button"
             onClick={async () => await saveLayers()}
+            disabled={saving}
           >
-            Save Changes
+            {saving ? "Saving..." : "Save Changes"}
           </Button>
         </div>
       </div>

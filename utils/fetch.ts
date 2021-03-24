@@ -98,12 +98,8 @@ export const decompressBodyApiFetch = async <JSON = any>(
     const raw = await res.text();
     // new flashcards do not have their empty array compressed
     if (raw === "[]") return JSON.parse(raw) as JSON;
-    console.warn("Raw data", raw);
     const data = decompressFromEncodedURIComponent(raw);
-    console.warn("Decompressed data", data);
-    const json: JSON = JSON.parse(data!) as JSON;
-    console.warn("JSON data", json);
-    return json;
+    return JSON.parse(data!) as JSON;
   } catch (err) {
     const error = err as FetchError;
     if (error.status === 401) return false;

@@ -145,10 +145,19 @@ export function useFlashcard(
     }
   }, [layerDataError]);
 
+  const {
+    activeLayer,
+    activeItem,
+    setActiveItem,
+    createToast,
+    setSaving,
+  } = useGlobal();
+
   const saveLayers = async () => {
     if (layers) {
       if (Array.isArray(layers)) {
         try {
+          setSaving(true);
           await decompressBodyApiFetch<Array<LayerData>>(
             isSub
               ? `/collections/${colId}/subcollections/${subId!}/flashcards/${cardId}/layers`
@@ -156,6 +165,8 @@ export function useFlashcard(
             "PATCH",
             layers
           );
+          createToast("Flashcard Saved", "success");
+          setSaving(false);
         } catch (rawErrors) {
           const errInfo = (rawErrors as FetchError).info as ApiError;
           const err = errInfo ? errInfo.error : undefined;
@@ -170,8 +181,6 @@ export function useFlashcard(
       }
     }
   };
-
-  const { activeLayer, activeItem, setActiveItem } = useGlobal();
 
   const addNewLayer = async () => {
     if (layers) {

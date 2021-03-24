@@ -12,7 +12,7 @@ import {
 import { toast } from "react-toastify";
 
 export type GlobalData = {
-  createToast: (message: string) => void;
+  createToast: (message: string, type: "success" | "error") => void;
   activeLayer: number;
   setActiveLayer: Dispatch<SetStateAction<number>>;
   activeItem: number;
@@ -28,6 +28,8 @@ export type GlobalData = {
   penErase: boolean;
   penEraseRef: MutableRefObject<boolean>;
   setPenErase: (val: boolean) => void;
+  saving: boolean;
+  setSaving: Dispatch<SetStateAction<boolean>>;
 };
 
 // Create a context that will hold the values that we are going to expose to our components.
@@ -39,8 +41,9 @@ type Props = {
 
 // Create a "controller" component that will calculate all the data that we need
 export const GlobalProvider = ({ children }: Props) => {
-  const createToast = (message: string) => {
-    toast.error(message);
+  const createToast = (message: string, type: "success" | "error") => {
+    if (type === "success") toast.success(message);
+    if (type === "error") toast.error(message);
   };
 
   const [activeLayer, setActiveLayer] = useState(0);
@@ -68,6 +71,8 @@ export const GlobalProvider = ({ children }: Props) => {
     _setPenErase(val);
   };
 
+  const [saving, setSaving] = useState(false);
+
   const values = useMemo(
     () => ({
       createToast,
@@ -86,8 +91,18 @@ export const GlobalProvider = ({ children }: Props) => {
       penErase,
       penEraseRef,
       setPenErase,
+      saving,
+      setSaving,
     }),
-    [activeLayer, activeItem, isDrawingMode, penColour, penRadius, penErase]
+    [
+      activeLayer,
+      activeItem,
+      isDrawingMode,
+      penColour,
+      penRadius,
+      penErase,
+      saving,
+    ]
   );
 
   // Finally, return the interface that we want to expose to our other components

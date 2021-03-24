@@ -28,7 +28,7 @@ const CardImage = ({
         const blob = item.getAsFile();
         if (blob!.size > 2.5 * 1000000) {
           // do not allow images larger than 2.5MB
-          createToast("Image can only be at most 2.5MB");
+          createToast("Image can only be at most 2.5MB", "error");
           return;
         }
         setContent(await blobToBase64(blob!));
