@@ -21,12 +21,7 @@ const IndexPage = () => {
         </Link>
         <br />
         <br />
-        <h1 className="text-2xl font-bold">
-          WARNING: Printing to PDF only works properly in Chromium-based
-          browsers, e.g. Google Chrome
-        </h1>
-        <br />
-        Known Issues:
+        <h1 className="font-semibold">Known Issues:</h1>
         <ul className="list-disc">
           <li>
             Changes can take up to 60 seconds to update everywhere, e.g. adding
