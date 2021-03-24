@@ -13,11 +13,13 @@ const PrintCollectionFlashcardIdPage = () => {
   const router = useRouter();
   const [collectionId, setCollectionId] = useState("");
   const [flashcardId, setFlashcardId] = useState("");
+  const [shouldPrint, setShouldPrint] = useState(false);
   useEffect(() => {
     if (router.query.collectionId)
       setCollectionId(router.query.collectionId as string);
     if (router.query.flashcardId)
       setFlashcardId(router.query.flashcardId as string);
+    if (router.query.shouldPrint) setShouldPrint(true);
   }, [router.query]);
 
   const { previewData, titleError } = useFlashcardPreview(
@@ -46,6 +48,12 @@ const PrintCollectionFlashcardIdPage = () => {
   useEffect(() => {
     setDataError(<>{layerError}</>);
   }, [layerError]);
+
+  useEffect(() => {
+    if (shouldPrint && previewData && layers) {
+      window.print();
+    }
+  }, [shouldPrint, previewData, layers]);
 
   return (
     (self && previewData && layers && (

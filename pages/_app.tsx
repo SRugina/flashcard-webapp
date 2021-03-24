@@ -22,7 +22,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       </GlobalProvider>
     </Layout>
   ) : (
-    <Component {...pageProps} />
+    <GlobalProvider>
+      <Component {...pageProps} />
+    </GlobalProvider>
   );
 }
 
