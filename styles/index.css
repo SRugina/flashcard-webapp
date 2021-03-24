@@ -10,7 +10,21 @@
 
 /* Print to A4 landscape by default */
 @media print {
-  @page { size: A4 landscape; }
+  @page {
+    size: A4 landscape;
+  }
+
+  .flashcardTitleCard {
+    @apply relative overflow-hidden line-clamp-4 rounded-lg bg-gray-300 text-2xl font-bold text-gray-400;
+  }
+
+  .flashcardBackground {
+    @apply absolute top-0 left-0 w-full h-full flex flex-col justify-between rounded-lg overflow-hidden;
+  }
+
+  .flashcardBackgroundLine {
+    @apply w-full bg-black;
+  }
 }
 
 /* apply a natural box layout model to all elements, but allowing components to change */

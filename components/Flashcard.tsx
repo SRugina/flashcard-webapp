@@ -24,7 +24,11 @@ const Flashcard = ({
     >
       <div
         id="flashcard-background"
-        className="absolute top-0 left-0 w-full h-full flex flex-col justify-between rounded-lg overflow-hidden"
+        className={
+          printMode
+            ? "flashcardBackground"
+            : "absolute top-0 left-0 w-full h-full flex flex-col justify-between rounded-lg overflow-hidden"
+        }
         style={{ zIndex: 0 }}
       >
         {
@@ -34,7 +38,9 @@ const Flashcard = ({
             .map((_, index) => (
               <div
                 key={index}
-                className="w-full bg-black"
+                className={
+                  printMode ? "flashcardBackgroundLine" : "w-full bg-black"
+                }
                 style={{ height: "0.3mm" }}
               ></div>
             ))

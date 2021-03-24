@@ -94,7 +94,7 @@ const PrintCollectionFlashcardIdPage = () => {
           ref={(element) => setContainer(element)}
         >
           <div
-            className="relative overflow-hidden line-clamp-4 rounded-lg bg-gray-300 text-2xl font-bold text-gray-400"
+            className="relative overflow-hidden line-clamp-4 rounded-lg bg-gray-300 text-2xl font-bold text-gray-400 flashcardTitleCard"
             style={{ width: "152mm", height: "102mm" }}
           >
             <h1>{title}</h1>
