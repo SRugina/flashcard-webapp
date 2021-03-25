@@ -1,0 +1,14 @@
+name = "flashcard-webapp-backend"
+type = "webpack"
+account_id = "<YOUR_CLOUDFLARE_ACCOUNT_ID>"
+route = "<YOUR_API_ROUTE_DESTINATION_ON_CLOUDFLARE>"
+zone_id = "<YOUR_CLOUDFLARE_ZONE_ID>"
+webpack_config = "backend-webpack.config.js"
+kv_namespaces = [
+  { binding = "Users", id = "<YOUR_CLOUDFLARE_USERS_KV_NAMESPACE_ID>" },
+  { binding = "Sessions", id = "<YOUR_CLOUDFLARE_SESSIONS_KV_NAMESPACE_ID>" },
+  { binding = "Collections", id = "<YOUR_CLOUDFLARE_COLLECTIONS_KV_NAMESPACE_ID>" },
+  { binding = "SubCollections", id = "<YOUR_CLOUDFLARE_SUBCOLLECTIONS_KV_NAMESPACE_ID>" },
+  { binding = "Flashcards", id = "<YOUR_CLOUDFLARE_FLASHCARDS_KV_NAMESPACE_ID>" }
+]
+vars = { FRONTEND_ORIGIN_URL = "<YOUR_FRONTEND_ORIGIN_URL>" }
