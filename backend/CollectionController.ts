@@ -32,7 +32,7 @@ import {
   deleteSubCollection,
 } from "./SubCollectionController";
 
-const CollectionController = Router({ base: "/collections" });
+const CollectionController = Router({ base: "/api/collections" });
 
 export const formatCollectionKey = (request: ApiRequest, colId: string) => {
   return `${formatUserKey(request)}:col:${colId}`;

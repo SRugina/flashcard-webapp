@@ -4,7 +4,7 @@ import CollectionController from "./CollectionController";
 import "./utils/namespaces";
 import "./utils/secrets";
 
-const router = Router();
+const router = Router({ base: "/api" });
 
 const withJson = (request: Request) => {
   const contentType = request.headers.get("Content-Type") || "";
@@ -13,7 +13,8 @@ const withJson = (request: Request) => {
     !contentType.includes("application/json")
   ) {
     return new Response(
-      JSON.stringify({ error: "Expected JSON Content-Type" })
+      JSON.stringify({ error: "Expected JSON Content-Type" }),
+      { status: 400 }
     );
   }
 };
@@ -22,7 +23,13 @@ router
   .all("*", withJson)
   .all("/users/*", UserController.handle)
   .all("/collections/*", CollectionController.handle)
-  .all("*", () => new Response("Route not found", { status: 404 }));
+  .all(
+    "*",
+    () =>
+      new Response(JSON.stringify({ error: "Route not found" }), {
+        status: 404,
+      })
+  );
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
 export const handleRequest = async (request: Request) => {

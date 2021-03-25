@@ -10,7 +10,7 @@ import {
   UserMetadata,
 } from "../interfaces";
 
-const UserController = Router({ base: "/users" });
+const UserController = Router({ base: "/api/users" });
 
 /*
  * The key used at the start of all other namespaces
