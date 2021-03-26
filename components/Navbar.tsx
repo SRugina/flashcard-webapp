@@ -123,6 +123,15 @@ const Navbar = memo(() => {
                   Collections
                 </Button>
                 <Button
+                  type="link"
+                  href="/account/settings"
+                  color="custom"
+                  size="small"
+                  className="mt-0 sm:mx-2 block hover:bg-gray-200 focus:bg-gray-200"
+                >
+                  Settings
+                </Button>
+                <Button
                   type="button"
                   onClick={async () => await signOut()}
                   color="custom"
