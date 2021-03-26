@@ -171,6 +171,13 @@ const updateSelf = async (request: ApiRequest) => {
     );
   }
 
+  const userList = (await Users.list({ prefix: `${body.username}:` })).keys;
+  if (userList.length > 0) {
+    return new Response(JSON.stringify({ error: "Username already exists" }), {
+      status: 422,
+    });
+  }
+
   const oldKey = formatKeyFromUsernameId(request.username!, request.userId!);
   const newKey = formatKeyFromUsernameId(body.username, request.userId!);
 
