@@ -57,6 +57,7 @@ export function useSelf() {
   };
   const updateSelf = async (updateUser: UpdateUserData) => {
     await mutate(bodyApiFetch("/users/self", "PATCH", updateUser), false);
+    return;
   };
   const updatePassword = async (updateUserPassword: UpdateUserPasswordData) => {
     await mutate(
@@ -67,7 +68,7 @@ export function useSelf() {
   };
 
   const protectRoute = () => {
-    if (error || data === false) {
+    if (data === false) {
       void router.push("/login");
     }
   };
