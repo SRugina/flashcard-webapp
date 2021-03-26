@@ -56,19 +56,23 @@ export function useSelf() {
     }
   };
   const updateSelf = async (updateUser: UpdateUserData) => {
-    await mutate(bodyApiFetch("/users/self", "PATCH", updateUser), false);
+    const updated = await bodyApiFetch<Self>(
+      "/users/self",
+      "PATCH",
+      updateUser
+    );
+    // update the local data immediately, but disable the revalidation
+    await mutate(updated, false);
     return;
   };
+
   const updatePassword = async (updateUserPassword: UpdateUserPasswordData) => {
-    await mutate(
-      bodyApiFetch("/users/self/password", "PATCH", updateUserPassword),
-      false
-    );
+    await bodyApiFetch("/users/self/password", "PATCH", updateUserPassword);
     return;
   };
 
   const protectRoute = () => {
-    if (data === false) {
+    if (error || data === false) {
       void router.push("/login");
     }
   };
